@@ -1,42 +1,90 @@
 #root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+ margin: 0;
+ padding: 0;
+ box-sizing: border-box;
+}
+.homeNav{
+    display: flex;
+    justify-content: space-between
+}
+#mainLogo{
+    width: 7em;
+    height: 5em;
+    margin: auto 2em;
+    padding-right: 2em;
+    border-right: 2px solid gray;
+}
+.homeNav>ul>li {
+    list-style: none;
+}
+#services-nav{
+    display: flex;
+    justify-content: space-between;
+}
+#services-nav>li>div{
+    text-align: center;
+    margin: auto 1em;
+    padding: 0.5em 1em;
+    border-radius: 15px;
+}
+#services-nav>li>div:hover{
+    background-color: rgb(206, 200, 200);
+    cursor: pointer;
+}
+#services-nav>li>div>img{
+    width:3em;
+    height: 2em;
+}
+#help-nav{
+    display: flex;
+    justify-content: space-between;
+    margin: auto 1em;
+}
+#help-nav>li{
+    display: flex;
+    align-items: center;
+    margin: auto 1em;
+    padding: 0.5em 1em;
+    border-radius: 15px;
+}
+#help-nav>li:hover{
+    background-color: rgb(206, 200, 200);
+    cursor: pointer;
+}
+#main{
+    background-image: url('../src/Images/skyline.jpg');
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 95vh;
+    background-size: cover;
+    position: relative;
+}
+#searchBus{
+    position: absolute;
+    top: 30%;
+    left: 68%;
+    transform: translate(-50%, -50%);
+    width: 100vw;
+}
+#searchBus>input{
+    font-size: 1em;
+    padding: 2.7em;
+    font-weight: bold;
+    outline: none;
+    border: 0.5px solid rgb(201, 195, 195);
+}
+#searchBus>button{
+    background-color: rgb(232, 64, 64);
+    font-weight: bold;
+    font-size: 1em;
+    padding: 2.7em;
+    color:white;
+    border-radius: 0 15px 15px 0;
+}
+#searchBus>#from{
+    border-radius: 15px 0 0 15px;
+}
+#searchBus>#doj{
+    padding: 3.3em;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
-}
-
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
-}
-
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
-}
