@@ -1,4 +1,4 @@
-#root {
+body {
  margin: 0;
  padding: 0;
  box-sizing: border-box;
@@ -8,11 +8,10 @@
     justify-content: space-between
 }
 #mainLogo{
-    width: 7em;
-    height: 5em;
+    width: 5em;
+    height: 3em;
     margin: auto 2em;
     padding-right: 2em;
-    border-right: 2px solid gray;
 }
 .homeNav>ul>li {
     list-style: none;
@@ -88,3 +87,49 @@
     padding: 3.3em;
 }
 
+#busesNav{
+    display: flex;
+    background-color: rgb(232 64 64);
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+    height: 5em;
+}
+#busesNav img{
+    height: 4em
+}
+#busesNav>ul{
+    display: flex;
+    list-style: none;
+    justify-items: center;
+    margin: auto 2em;
+}
+#busesNav>ul>li{
+    margin: auto 1em
+}
+#busRoute{
+    margin: 1em;
+}
+#travelPlan{
+    display: flex;
+    font-weight: bolder;
+    margin: 1em;
+}
+#travelPlan>button{
+    padding: 0.5em 2em;
+    border-radius: 5px;
+}
+#filters{
+    margin: 1em;
+    width: 20%;
+}
+#filters>ul{
+    list-style: none;
+    margin-left: -2.5em;
+}
+#filters>ul>li{
+    margin: 0.5em auto;
+}
+#filters>p{
+    font-weight: bolder;
+}
