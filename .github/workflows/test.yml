@@ -5,5 +5,11 @@ jobs:
         runs-on: ubuntu-latest
         steps: 
           - uses: actions/checkout@v2
-          - run: tree
+          - uses: actions/setup-node@v2
+            with:
+                node-version: "18.16.0"
+          - name: Install node_modules
+            run: npm install
+          - name: Setup finish
+            run: Echo "hurray"
 
