@@ -8,10 +8,8 @@ jobs:
           - uses: actions/setup-node@v2
             with:
                 node-version: "18.16.0"
-          - name: change directory
-            run: cd booking-app
           - name: Install node_modules
-            run: npm install
+            run: yarn
           - name: Setup finish
             run: Echo "hurray"
 
