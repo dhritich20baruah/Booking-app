@@ -11,5 +11,5 @@ jobs:
           - name: Install node_modules
             run: yarn
           - name: Setup finish
-            run: Echo "hurray"
+            run: echo "hurray"
 
