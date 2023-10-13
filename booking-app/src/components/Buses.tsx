@@ -124,7 +124,9 @@ const Buses = () => {
           <SeatPlan/>
         </div>
       </section>
+      <div id="passengerDetails">
       <PassengerDetails/>
+      </div>
     </main>
   );
 };

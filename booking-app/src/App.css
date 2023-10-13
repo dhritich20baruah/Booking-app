@@ -183,6 +183,9 @@ body {
 #station{
     width: 40%
 }
+#buses{
+    position: relative;
+}
 #bus{
     display: flex;
     width: 100%;
@@ -240,4 +243,14 @@ body {
 #station button:hover{
     cursor: pointer;
     background-color: rgb(251, 34, 34);
+}
+
+#passengerDetails{
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: white;
+    z-index: 10;
+    height: 100vh;
+    padding: 2em 3em;
 }
