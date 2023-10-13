@@ -178,17 +178,20 @@ body {
 #seat-Selection{
     width: 60%;
     margin: 5em;
-    display: flex;
 }
 
 #station{
     width: 40%
 }
-#seats{
+#bus{
+    display: flex;
     width: 100%;
-    border: 2px solid black;
     background-color: white;
     height: 80%;
+    border: 2px solid black;
+    border-left: 10px solid black;
+}
+#seats{
     padding: 1em;
     display: grid;
     grid-template-rows: 1fr 1fr;
@@ -196,9 +199,7 @@ body {
 }
 #driver{
     width: 3em;
-    height: 96.5%;
-    border: 2px solid black;
-    border-left: 10px solid black;
+    border-right: 4px solid black;
     background-color: white;
 }
 

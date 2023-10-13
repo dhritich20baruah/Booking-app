@@ -1,7 +1,7 @@
 import React from "react";
 import redLogo from "../Images/redbuslogo.jpg";
 import SeatPlan from "./SeatPlan";
-
+import PassengerDetails from "./PassengerDetails";
 const Buses = () => {
   return (
     <main id="buses">
@@ -124,6 +124,7 @@ const Buses = () => {
           <SeatPlan/>
         </div>
       </section>
+      <PassengerDetails/>
     </main>
   );
 };
