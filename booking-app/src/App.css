@@ -251,6 +251,33 @@ body {
     right: 0;
     background-color: white;
     z-index: 10;
-    height: 100vh;
+    height: 100%;
     padding: 2em 3em;
+    width: 30vw;
+    box-shadow: 0 5px 5px black;
+}
+#passengerDetails input{
+    width: 90%;
+    padding: 0.5em;
+    margin: 0.5em auto;
+    outline: none;
+}
+
+#passengerDetails button{
+    background-color: rgb(251, 34, 34);
+    padding: 5px;
+    color: white;
+    border: none;
+}
+.gender-age{
+    display: flex;
+}
+#gender{
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    
+}
+#Male{
+    background-color: red;
 }

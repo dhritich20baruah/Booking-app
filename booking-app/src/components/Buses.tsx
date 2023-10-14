@@ -1,15 +1,24 @@
-import React from "react";
+import { useState } from "react";
 import redLogo from "../Images/redbuslogo.jpg";
 import SeatPlan from "./SeatPlan";
 import PassengerDetails from "./PassengerDetails";
+import { Link } from "react-router-dom";
 const Buses = () => {
+  const [visibility, setVisibility] = useState(false);
+
+  const handleVisible = () => {
+    setVisibility((visibility) => !visibility);
+  };
+
   return (
     <main id="buses">
       <nav id="busesNav">
         <ul>
+          <Link to="/">
           <li>
             <img src={redLogo} alt="" />
           </li>
+          </Link>
           <li>BUS TICKETS</li>
           <li>rYde</li>
           <li>redRail</li>
@@ -103,7 +112,7 @@ const Buses = () => {
             <div>
               <p className="text-bold">05:50</p>
               <p>11-Oct</p>
-            <p>Dibrugarh ASTC</p>
+              <p>Dibrugarh ASTC</p>
             </div>
             <div>
               <p className="text-bold">
@@ -114,19 +123,18 @@ const Buses = () => {
               <p className="text-bold">INR 857.14</p>
             </div>
             <div>
-                <br />
-                <p>42 Seats Available</p>
-                <p>8 Single</p>
-                <br /><br />
-                <button>VIEW SEATS</button>
+              <br />
+              <p>42 Seats Available</p>
+              <p>8 Single</p>
+              <br />
+              <br />
+              <button>VIEW SEATS</button>
             </div>
           </div>
-          <SeatPlan/>
+         {visibility && <SeatPlan />}
         </div>
       </section>
-      <div id="passengerDetails">
-      <PassengerDetails/>
-      </div>
+      {visibility && <PassengerDetails />}
     </main>
   );
 };
