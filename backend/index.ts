@@ -1,7 +1,7 @@
 import express, { Express, Request, Response } from "express";
 import cors from "cors"
 import dotenv from "dotenv";
-import mongoose, { Schema, Document, Model, CallbackError } from "mongoose";
+import mongoose from "mongoose";
 import Bus from "./models/Bus";
 import Journey from "./models/Journey";
 
@@ -13,10 +13,7 @@ app.use(cors())
 app.use(express.json());
 
 mongoose
-  .connect("mongodb://0.0.0.0:27017/bookingApp", {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
+  .connect("mongodb://0.0.0.0:27017/bookingApp")
   .then(() => console.log("DB connected"))
   .catch((err) => console.log(err));
 

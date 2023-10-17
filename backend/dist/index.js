@@ -23,10 +23,7 @@ const port = process.env.PORT;
 app.use((0, cors_1.default)());
 app.use(express_1.default.json());
 mongoose_1.default
-    .connect("mongodb://0.0.0.0:27017/bookingApp", {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-})
+    .connect("mongodb://0.0.0.0:27017/bookingApp")
     .then(() => console.log("DB connected"))
     .catch((err) => console.log(err));
 app.get("/", (req, res) => {
