@@ -1,8 +1,21 @@
-import React from "react";
+import {useRecoilState} from 'recoil'
+import { VisibilityAtom } from "../recoil/atom/Visible";
+import { passengerVisibilitySelector } from "../recoil/selectors/VisibilitySelectors";
 
 const SeatPlan = () => {
   const right = [...Array(24).keys()].map((i) => i + 1);
   const left = Array.from({ length: 48 - 25 + 1 }, (_, index) => 25 + index);
+  const [, setVisibility] = useRecoilState(VisibilityAtom);
+
+  const handleVisible = () => {
+    setVisibility((visibility) => !visibility);
+  };
+
+  const [, setPassengerVisibility] = useRecoilState(passengerVisibilitySelector);
+
+  const handlePassengerVisible = () => {
+    setPassengerVisibility((prevValue) => !prevValue);
+  };
 
   return (
     <section id="seatPlan">
@@ -48,9 +61,9 @@ const SeatPlan = () => {
         </label>
         <hr />
         <p>Total Fare: INR 875</p>
-        <button>CONTINUE</button>
+        <button onClick={handlePassengerVisible}>CONTINUE</button>
       </div>
-      <i className="material-icons" style={{ margin: "10px" }}>
+      <i className="material-icons" style={{ margin: "10px" }} onClick={handleVisible}>
         highlight_off
       </i>
     </section>

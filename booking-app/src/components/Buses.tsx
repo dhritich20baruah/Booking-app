@@ -1,14 +1,19 @@
-import { useState } from "react";
 import redLogo from "../Images/redbuslogo.jpg";
 import SeatPlan from "./SeatPlan";
 import PassengerDetails from "./PassengerDetails";
 import { Link } from "react-router-dom";
+import {useRecoilState, useRecoilValue} from 'recoil'
+import { VisibilityAtom } from "../recoil/atom/Visible";
+import { passengerVisibilitySelector } from "../recoil/selectors/VisibilitySelectors";
+
 const Buses = () => {
-  const [visibility, setVisibility] = useState(false);
+  const [visibility, setVisibility] = useRecoilState(VisibilityAtom);
 
   const handleVisible = () => {
     setVisibility((visibility) => !visibility);
   };
+
+  const passengerVisibility = useRecoilValue(passengerVisibilitySelector)
 
   return (
     <main id="buses">
@@ -128,13 +133,13 @@ const Buses = () => {
               <p>8 Single</p>
               <br />
               <br />
-              <button>VIEW SEATS</button>
+              <button onClick={handleVisible}>VIEW SEATS</button>
             </div>
           </div>
-         {visibility && <SeatPlan />}
+         {!visibility && <SeatPlan />}
         </div>
       </section>
-      {visibility && <PassengerDetails />}
+      {passengerVisibility && <PassengerDetails />}
     </main>
   );
 };

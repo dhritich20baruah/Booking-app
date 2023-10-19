@@ -1,14 +1,16 @@
-import { useState } from "react";
+import {useRecoilState} from 'recoil'
+import { passengerVisibilitySelector } from '../recoil/selectors/VisibilitySelectors';
 
 const PassengerDetails = () => {
-  const [visibility, setVisibility] = useState(false)
+  const [, setPassengerVisibility] = useRecoilState(passengerVisibilitySelector);
 
-  const handleVisible = () => {
-    setVisibility(visibility => !visibility)
-  }
+  const handlePassengerVisible = () => {
+    setPassengerVisibility((prevValue) => !prevValue);
+  };
+
   return (
     <div id="passengerDetails">
-      <i className="material-icons" onClick={handleVisible}>highlight_off</i>
+      <i className="material-icons" onClick={handlePassengerVisible}>highlight_off</i>
       <h2>Passenger Details</h2>
       <div className="passenger-info">
         <h4>
