@@ -1,12 +1,14 @@
-import React, { useState } from "react";
+import { useState } from "react";
+import { useRecoilState } from "recoil"
+import { originState } from "../recoil/atom/JourneyAtom";
+import { destinationState } from "../recoil/atom/JourneyAtom";
 import logo from "../Images/redbuslogo2.jpg";
 import blackLogo from "../Images/redbusblack.png";
 import ride from "../Images/ride.jpg";
 import train from "../Images/train.jpg";
-import "../App.css";
 
 const Home = () => {
-  const stoppages = [
+  const stoppages: string[] = [
     "Goalpara",
     "Guwahati",
     "Nagaon",
@@ -17,25 +19,38 @@ const Home = () => {
     "Tinsukia",
     "Saikhowa",
   ];
-  const [from, setFrom] = useState("");
-  const [to, setTo] = useState("");
-  const [doj, setDoj] = useState("");
-  const [filteredStoppages, setFilteredStoppages] = useState(stoppages);
 
-  const handleSearch = (e: any) => {
-    const query = e.target.value;
-    setFrom(query);
+  const [places, setPlaces] = useState<string>("");
+  const [filteredStoppages, setFilteredStoppages] = useState<string[]>([]);
+  const [origin, setOrigin] = useRecoilState<string>(originState);
+  const [destination, setDestination] = useRecoilState<string>(destinationState);
+  const [doj, setDoj] = useState<string>("");
 
-    const filteredResult = stoppages.filter((stopp) =>
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const query: string = e.target.value;
+    setPlaces(query);
+    const filteredResult: string[] = stoppages.filter((stopp) =>
       stopp.toLowerCase().includes(query.toLowerCase())
     );
 
     setFilteredStoppages(filteredResult);
   };
+
+  const getOrigin = (stopp: string) => {
+    setPlaces(stopp)
+    setOrigin((prevOrigin)=>{
+      if(prevOrigin !== stopp){
+        return stopp;
+      }
+      else{
+        return prevOrigin
+      }
+    })
+  }
   return (
-    <div>
-      <nav className="homeNav">
-        <img src={logo} alt="" id="mainLogo" />
+    <div className="bg-red-400">
+      <nav className="homeNav flex justify-between">
+        <img src={logo} alt="" id="mainLogo" className="w-10"/>
         <ul id="services-nav">
           <li>
             <div>
@@ -67,18 +82,28 @@ const Home = () => {
       </nav>
       <div id="main">
         <form action="" method="post" id="searchBus">
+          <div id="origin">
           <input
             type="text"
             name="from"
-            id="from"
-            value={from}
+            id="origin-search"
+            value={places}
             onChange={handleSearch}
-          />
+          /> 
+          {places && (
+            <ul id="fromList">
+              {filteredStoppages.map((stopp, index) => (
+                <li key={index} onClick={()=>getOrigin(stopp)} className="filteredStops">{stopp}</li>
+              ))}
+            </ul>
+          )}
+        </div>
           <input
             type="text"
             name="to"
             id="to"
-            onChange={(event) => setTo(event.target.value)}
+            value={destination}
+            onChange={handleSearch}
           />
           <input
             type="date"
@@ -88,15 +113,7 @@ const Home = () => {
           />
           <button type="submit">SEARCH BUSES</button>
         </form>
-        <div>
-          {from && (
-            <ul id="fromList">
-              {filteredStoppages.map((stopp, index) => (
-                <li key={index}>{stopp}</li>
-              ))}
-            </ul>
-          )}
-        </div>
+       
       </div>
     </div>
   );

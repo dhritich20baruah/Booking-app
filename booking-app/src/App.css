@@ -66,6 +66,13 @@ body {
     transform: translate(-50%, -50%);
     width: 100vw;
 }
+#origin-search{
+    font-size: 1em;
+    padding: 2.7em;
+    font-weight: bold;
+    outline: none;
+    border: 0.5px solid rgb(201, 195, 195);
+}
 #searchBus>input{
     font-size: 1em;
     padding: 2.7em;
@@ -87,6 +94,9 @@ body {
 #searchBus>#doj{
     padding: 3.3em;
 }
+#origin{
+
+}
 #fromList{
     position: absolute;
     top: 37%;
@@ -95,6 +105,13 @@ body {
     background-color: white;
     width: 10em;
     list-style: none;
+}
+.filteredStops{
+    margin:3em auto;
+    font-weight: bold;
+}
+.filteredStops:hover{
+    cursor: pointer;
 }
 
 #busesNav{
