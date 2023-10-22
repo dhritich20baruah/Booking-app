@@ -48,12 +48,12 @@ const Home = () => {
     })
   }
   return (
-    <div className="bg-red-400">
+    <div className="">
       <nav className="homeNav flex justify-between">
-        <img src={logo} alt="" id="mainLogo" className="w-10"/>
-        <ul id="services-nav">
+        <img src={logo} alt="" id="mainLogo" className="w-[5em] h-[3em] my-auto mx-[2em] pr-[2em]"/>
+        <ul id="services-nav" className="flex justify-between">
           <li>
-            <div>
+            <div className="">
               <img src={blackLogo} alt="" />
               <p>Bus Tickets</p>
             </div>
