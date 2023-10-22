@@ -3,3 +3,11 @@
 @tailwind utilities;
 
 
+#main{
+    background-image: url('../src/Images/skyline.jpg');
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 95vh;
+    background-size: cover;
+    position: relative;
+}

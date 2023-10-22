@@ -53,29 +53,29 @@ const Home = () => {
         <img src={logo} alt="" id="mainLogo" className="w-[5em] h-[3em] my-auto mx-[2em] pr-[2em]"/>
         <ul id="services-nav" className="flex justify-between">
           <li>
-            <div className="">
-              <img src={blackLogo} alt="" />
+            <div className="text-center my-auto mx-5 py-[0.5em] px-[1em] rounded-md hover:cursor-pointer hover:bg-slate-300">
+              <img src={blackLogo} alt="" className="w-[3em] h-[2em] mx-auto"/>
               <p>Bus Tickets</p>
             </div>
           </li>
           <li>
-            <div>
-              <img src={ride} alt="" />
+            <div className="text-center my-auto mx-5 py-[0.5em] px-[1em] rounded-md hover:cursor-pointer hover:bg-slate-300">
+              <img src={ride} alt="" className="w-[3em] h-[2em] mx-auto"/>
               <p>Cab Rental</p>
             </div>
           </li>
           <li>
-            <div>
-              <img src={train} alt="" />
+            <div className="text-center my-auto mx-5 py-[0.5em] px-[1em] rounded-md hover:cursor-pointer hover:bg-slate-300">
+              <img src={train} alt="" className="w-[3em] h-[2em] mx-auto"/>
               <p>Train Tickets</p>
             </div>
           </li>
         </ul>
-        <ul id="help-nav">
-          <li>
+        <ul id="help-nav" className="flex justify-between my-auto mx-[1em]">
+          <li className="flex items-center mx-[1em] py-[0.5em] px-[1em] rounded-md">
             <i className="material-icons">headset_mic</i> Help
           </li>
-          <li>
+          <li className="flex items-center mx-[1em] py-[0.5em] px-[1em] rounded-md">
             <i className="material-icons">account_circle</i> My Account
           </li>
         </ul>
