@@ -21,9 +21,10 @@ const Home = () => {
   ];
 
   const [places, setPlaces] = useState<string>("");
-  const [filteredStoppages, setFilteredStoppages] = useState<string[]>([]);
+  const [filteredOrigins, setFilteredOrigins] = useState<string[]>([]);
   const [origin, setOrigin] = useRecoilState<string>(originState);
-  
+
+  const [stops, setStops] = useState<string>("")
   const [filteredDestinations, setFilteredDestination] = useState<string[]>([]);
   const [destination, setDestination] = useRecoilState<string>(destinationState);
 
@@ -36,7 +37,7 @@ const Home = () => {
       stopp.toLowerCase().includes(query.toLowerCase())
     );
 
-    setFilteredStoppages(filteredResult);
+    setFilteredOrigins(filteredResult);
   };
 
   const getOrigin = (stopp: string) => {
@@ -52,7 +53,7 @@ const Home = () => {
 
   const handleSearchDestination = (e: React.ChangeEvent<HTMLInputElement>) => {
     const query: string = e.target.value;
-    setPlaces(query);
+    setStops(query);
     const filteredDestinations: string[] = stoppages.filter((stopp) =>
       stopp.toLowerCase().includes(query.toLowerCase())
     );
@@ -61,7 +62,7 @@ const Home = () => {
   };
 
   const getDestination = (stopp: string) => {
-    setPlaces(stopp);
+    setStops(stopp);
     setDestination((prevDestination) => {
       if (prevDestination !== stopp) {
         return stopp;
@@ -123,7 +124,7 @@ const Home = () => {
             <div className="absolute bg-white w-56 px-5 py-2">
               {places && (
                 <ul id="fromList">
-                  {filteredStoppages.map((stopp, index) => (
+                  {filteredOrigins.map((stopp, index) => (
                     <li
                       key={index}
                       onClick={() => getOrigin(stopp)}
@@ -142,18 +143,18 @@ const Home = () => {
               name="to"
               id="to"
               className="font-lg p-[2.7em] h-28 font-bold outline-none border-2 border-gray-500"
-              value={destination}
+              value={stops}
               onChange={handleSearchDestination}
               placeholder="To"
             />
-            <div>
-              {places && (
+            <div className="absolute bg-white w-56 px-5 py-2">
+              {stops && (
                 <ul id="fromList">
                   {filteredDestinations.map((stopp, index) => (
                     <li
                       key={index}
                       onClick={() => getDestination(stopp)}
-                      className="filteredStops"
+                      className="filteredOrigins my-2 font-bold text-gray-700 hover:cursor-pointer"
                     >
                       {stopp}
                     </li>
