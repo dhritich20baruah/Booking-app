@@ -98,15 +98,15 @@ const Buses = () => {
             </li>
           </ul>
         </div>
-        <div id="busList">
-          <div id="card">
+        <div id="busList" className="w-max-[80%] m-4">
+          <div id="card" className="p-4 grid grid-cols-7 gap-4 w-[100%] border-2 border-gray-600 font-md">
             <div>
-              <p className="text-bold">John Travels</p>
+              <p className="font-bold text-lg">John Travels</p>
               <br />
               <p>Volvo Multi-Axle A/C Semi Sleeper (2+2)</p>
             </div>
             <div>
-              <p className="text-bold">20:30</p>
+              <p className="font-bold text-lg">20:30</p>
               <br />
               <br />
               <p>ISBT Guwahati</p>
@@ -115,17 +115,17 @@ const Buses = () => {
               <p>09h 20m</p>
             </div>
             <div>
-              <p className="text-bold">05:50</p>
+              <p className="font-bold text-lg">05:50</p>
               <p>11-Oct</p>
               <p>Dibrugarh ASTC</p>
             </div>
             <div>
-              <p className="text-bold">
+              <p className="font-bold text-lg">
                 <i className="material-icons">star</i>4.0
               </p>
             </div>
             <div>
-              <p className="text-bold">INR 857.14</p>
+              <p className="font-bold text-lg">INR 857.14</p>
             </div>
             <div>
               <br />
@@ -133,7 +133,7 @@ const Buses = () => {
               <p>8 Single</p>
               <br />
               <br />
-              <button onClick={handleVisible}>VIEW SEATS</button>
+              <button onClick={handleVisible} className="bg-red-600 p-4 text-white hover:cursor-pointer hover:bg-red-700">VIEW SEATS</button>
             </div>
           </div>
          {!visibility && <SeatPlan />}
