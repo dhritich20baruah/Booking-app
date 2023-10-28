@@ -20,13 +20,13 @@ const SeatPlan = () => {
   return (
     <section id="seatPlan" className='w-[100%] h-auto bg-gray-300 flex'>
       <div id="seat-Selection" className='w-[60%] m-20'>
-        <div id="bus" className='flex w-fit bg-white h-[100%] border-2 border-black border-l-8'>
+        <div id="bus" className='flex w-fit bg-white h-fit border-2 border-black border-l-8'>
           <div id="driver" className='w-12 border-r-4 border-black bg-white'>
             <i className="material-icons" style={{ margin: "10px" }}>
               adjust
             </i>
           </div>
-          <div id="seats" className='p-4 grid grid-rows-2 gap-y-2'>
+          <div id="seats" className='p-4 grid grid-rows-2 gap-y-4'>
             <div id="right" className='h-[50%] w-[100%] grid grid-cols-12 gap-x-1'>
               {right.map((item) => {
                 return (

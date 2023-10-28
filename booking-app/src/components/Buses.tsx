@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import redLogo from "../Images/redbuslogo.jpg";
 import SeatPlan from "./SeatPlan";
 import PassengerDetails from "./PassengerDetails";
@@ -5,15 +6,28 @@ import { Link } from "react-router-dom";
 import {useRecoilState, useRecoilValue} from 'recoil'
 import { VisibilityAtom } from "../recoil/atom/Visible";
 import { passengerVisibilitySelector } from "../recoil/selectors/VisibilitySelectors";
+import axios from 'axios'
 
 const Buses = () => {
   const [visibility, setVisibility] = useRecoilState(VisibilityAtom);
+  const [busArray, setBusArray] = useState([])
 
   const handleVisible = () => {
     setVisibility((visibility) => !visibility);
   };
 
   const passengerVisibility = useRecoilValue(passengerVisibilitySelector)
+
+  useEffect(()=>{
+    const getBuses = async () => {
+      await axios.get('http://localhost:3000/getBus')
+      .then((res)=>setBusArray(res.data.busDetails))
+      .catch((err)=>console.log(err))
+    }
+    getBuses()
+  },[])
+
+  console.log(busArray)
 
   return (
     <main id="buses">
@@ -99,43 +113,48 @@ const Buses = () => {
           </ul>
         </div>
         <div id="busList" className="w-max-[80%] m-4">
-          <div id="card" className="p-4 grid grid-cols-7 gap-4 w-[100%] border-2 border-gray-600 font-md">
-            <div>
-              <p className="font-bold text-lg">John Travels</p>
-              <br />
-              <p>Volvo Multi-Axle A/C Semi Sleeper (2+2)</p>
+          {busArray.map((item)=>{
+            return(
+              <div id="card" className="p-4 grid grid-cols-7 gap-4 w-[100%] border-2 border-gray-600 font-md my-4">
+              <div>
+                <p className="font-bold text-lg">{item.name}</p>
+                <br />
+                <p>{item.details}</p>
+              </div>
+              <div>
+                <p className="font-bold text-lg">20:30</p>
+                <br />
+                <br />
+                <p>{item.start}</p>
+              </div>
+              <div>
+                <p>09h 20m</p>
+              </div>
+              <div>
+                <p className="font-bold text-lg">05:50</p>
+                <p>11-Oct</p>
+                <p>{item.end}</p>
+              </div>
+              <div>
+                <p className="font-bold text-lg">
+                  <i className="material-icons">star</i>4.0
+                </p>
+              </div>
+              <div>
+                <p className="font-bold text-lg">INR {item.fare}</p>
+              </div>
+              <div>
+                <br />
+                <p>{item.total_seats} Seats Available</p>
+                <p>8 Single</p>
+                <br />
+                <br />
+                <button onClick={handleVisible} className="bg-red-600 p-4 text-white hover:cursor-pointer hover:bg-red-700">VIEW SEATS</button>
+              </div>
             </div>
-            <div>
-              <p className="font-bold text-lg">20:30</p>
-              <br />
-              <br />
-              <p>ISBT Guwahati</p>
-            </div>
-            <div>
-              <p>09h 20m</p>
-            </div>
-            <div>
-              <p className="font-bold text-lg">05:50</p>
-              <p>11-Oct</p>
-              <p>Dibrugarh ASTC</p>
-            </div>
-            <div>
-              <p className="font-bold text-lg">
-                <i className="material-icons">star</i>4.0
-              </p>
-            </div>
-            <div>
-              <p className="font-bold text-lg">INR 857.14</p>
-            </div>
-            <div>
-              <br />
-              <p>42 Seats Available</p>
-              <p>8 Single</p>
-              <br />
-              <br />
-              <button onClick={handleVisible} className="bg-red-600 p-4 text-white hover:cursor-pointer hover:bg-red-700">VIEW SEATS</button>
-            </div>
-          </div>
+            )
+          })}
+       
          {!visibility && <SeatPlan />}
         </div>
       </section>

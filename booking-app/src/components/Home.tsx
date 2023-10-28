@@ -2,10 +2,13 @@ import { useState } from "react";
 import { useRecoilState } from "recoil";
 import { originState } from "../recoil/atom/JourneyAtom";
 import { destinationState } from "../recoil/atom/JourneyAtom";
+import { dojState } from "../recoil/atom/JourneyAtom";
 import logo from "../Images/redbuslogo2.jpg";
 import blackLogo from "../Images/redbusblack.png";
 import ride from "../Images/ride.jpg";
 import train from "../Images/train.jpg";
+import axios from "axios"
+import { redirect } from "react-router-dom";
 
 const Home = () => {
   const stoppages: string[] = [
@@ -20,6 +23,20 @@ const Home = () => {
     "Saikhowa",
   ];
 
+  async function searchBuses(){
+    const searchObj = {
+      origin, destination, doj
+    }
+
+    try{
+      const response = await axios.post('http://localhost:5000/searchBuses', searchObj)
+      redirect('/Buses')
+    }
+    catch(error){
+      console.log(error)
+    }
+  }
+
   const [places, setPlaces] = useState<string>("");
   const [filteredOrigins, setFilteredOrigins] = useState<string[]>([]);
   const [origin, setOrigin] = useRecoilState<string>(originState);
@@ -28,7 +45,7 @@ const Home = () => {
   const [filteredDestinations, setFilteredDestination] = useState<string[]>([]);
   const [destination, setDestination] = useRecoilState<string>(destinationState);
 
-  const [doj, setDoj] = useState<string>("");
+  const [doj, setDoj] = useRecoilState<string>(dojState);
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const query: string = e.target.value;
@@ -170,7 +187,7 @@ const Home = () => {
             className="font-lg p-[2.7em] h-28 font-bold outline-none border-2 border-gray-500"
             onChange={(event) => setDoj(event.target.value)}
           />
-          <button type="submit" className="bg-red-600 font-bold text-lg p-[2.7em] h-28 text-white rounded-tr-md rounded-br-md">SEARCH BUSES</button>
+          <button type="submit" className="bg-red-600 font-bold text-lg p-[2.7em] h-28 text-white rounded-tr-md rounded-br-md" onClick={searchBuses}>SEARCH BUSES</button>
         </form>
       </div>
     </div>
