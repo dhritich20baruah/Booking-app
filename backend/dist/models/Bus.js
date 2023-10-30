@@ -27,11 +27,18 @@ const mongoose_1 = __importStar(require("mongoose"));
 const busSchema = new mongoose_1.Schema({
     name: String,
     details: String,
-    start: String,
-    end: String,
-    total_seats: String,
-    stopages: [String],
-    fare: String,
+    service: String,
+    total_seats: Number,
+    stoppages: [
+        {
+            name: String,
+            distance_from_last: Number,
+            arrival_time: String,
+        },
+    ],
+    fare: Number,
+    start_time: String,
+    arrival_time: String,
 });
 const Bus = mongoose_1.default.model('Bus', busSchema);
 exports.default = Bus;

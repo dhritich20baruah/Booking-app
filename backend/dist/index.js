@@ -31,12 +31,12 @@ app.get("/", (req, res) => {
 });
 app.post('/newBus', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { name, details, start, end, total_seats, stopages, fare } = req.body;
+        const { name, details, service, total_seats, stoppages, fare, start_time, arrival_time, duration } = req.body;
         const newBus = new Bus_1.default({
-            name, details, start, end, total_seats, stopages, fare
+            name, details, service, total_seats, stoppages, fare, start_time, arrival_time, duration
         });
         yield newBus.save();
-        res.status(200).json({ status: 'OK' });
+        res.status(200).json({ status: 'OK', newBus });
     }
     catch (err) {
         console.error(err);

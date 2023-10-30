@@ -23,13 +23,13 @@ app.get("/", (req: Request, res: Response) => {
 
 app.post('/newBus', async (req: Request, res: Response)=>{
   try{
-    const {name, details, start, end, total_seats, stopages, fare } = req.body
+    const {name, details, service, total_seats, stoppages, fare, start_time, arrival_time, duration } = req.body
 
     const newBus = new Bus({
-      name, details, start, end, total_seats, stopages, fare 
+      name, details, service, total_seats, stoppages, fare, start_time, arrival_time, duration
     })
     await newBus.save();
-      res.status(200).json({ status: 'OK' });
+      res.status(200).json({ status: 'OK', newBus});
   }
   catch (err) {
     console.error(err);

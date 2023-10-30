@@ -1,24 +1,36 @@
 import mongoose, { Schema, Document, Model } from 'mongoose';
 
-type BusType =  Document & {
+type BusType = Document & {
+  name: string;
+  details: string;
+  service: string;
+  total_seats: number;
+  stoppages: {
     name: string;
-    details: string;
-    start: string;
-    end: string;
-    total_seats: string;
-    stopages: string[];
-    fare: string;
-}
+    distance_from_last: number;
+    arrival_time: string;
+  }[];
+  fare: number;
+  start_time: string;
+  arrival_time: string;
+};
 
 const busSchema: Schema<BusType> = new Schema({
-    name: String,
-    details: String,
-    start: String,
-    end: String,
-    total_seats: String,
-    stopages: [String],
-    fare: String,
-})
+  name: String,
+  details: String,
+  service: String,
+  total_seats: Number,
+  stoppages: [
+    {
+      name: String,
+      distance_from_last: Number,
+      arrival_time: String,
+    },
+  ],
+  fare: Number,
+  start_time: String,
+  arrival_time: String,
+});
 
 const Bus: Model<BusType> = mongoose.model<BusType>('Bus', busSchema);
 
