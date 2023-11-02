@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import mongoose from "mongoose";
 import Bus from "./models/Bus";
 import Journey from "./models/Journey";
+import busData from "./data/busData";
 
 dotenv.config();
 
@@ -40,8 +41,13 @@ app.post('/newBus', async (req: Request, res: Response)=>{
 
 app.get('/getBus', async (req: Request, res: Response)=>{
   try{
-    const busDetails = await Bus.find({})
-    res.status(200).json({busDetails})
+    // const busDetails = await Bus.find({})
+    for(let i = 0; i<busData.length; i++){
+      for(let j = 0; j<busData[i].stoppages.length-1; j++){
+        console.log(busData[i].stoppages[j].name, busData[i].stoppages[j].distance_from_last, busData[i].stoppages[j+1].name, busData[i].stoppages[j+1].distance_from_last)
+      }
+    }
+    res.status(200).json({busData})
   }
   catch (err) {
     console.error(err);

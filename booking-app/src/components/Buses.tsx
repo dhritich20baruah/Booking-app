@@ -21,7 +21,7 @@ const Buses = () => {
   useEffect(()=>{
     const getBuses = async () => {
       await axios.get('http://localhost:3000/getBus')
-      .then((res)=>setBusArray(res.data.busDetails))
+      .then((res)=>setBusArray(res.data.busData))
       .catch((err)=>console.log(err))
     }
     getBuses()

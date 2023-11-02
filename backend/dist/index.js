@@ -17,6 +17,7 @@ const cors_1 = __importDefault(require("cors"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const mongoose_1 = __importDefault(require("mongoose"));
 const Bus_1 = __importDefault(require("./models/Bus"));
+const busData_1 = __importDefault(require("./data/busData"));
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 const port = process.env.PORT;
@@ -45,8 +46,13 @@ app.post('/newBus', (req, res) => __awaiter(void 0, void 0, void 0, function* ()
 }));
 app.get('/getBus', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const busDetails = yield Bus_1.default.find({});
-        res.status(200).json({ busDetails });
+        // const busDetails = await Bus.find({})
+        for (let i = 0; i < busData_1.default.length; i++) {
+            for (let j = 0; j < busData_1.default[i].stoppages.length - 1; j++) {
+                console.log(busData_1.default[i].stoppages[j].name, busData_1.default[i].stoppages[j].distance_from_last, busData_1.default[i].stoppages[j + 1].name, busData_1.default[i].stoppages[j + 1].distance_from_last);
+            }
+        }
+        res.status(200).json({ busData: busData_1.default });
     }
     catch (err) {
         console.error(err);
