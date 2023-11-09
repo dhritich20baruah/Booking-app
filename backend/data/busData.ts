@@ -79,7 +79,7 @@ interface Stoppage {
       details: "Bharat Benz A/C 2+1 Seater",
       total_seats: 35,
       stoppages: [
-        "Guwahati", "Nagaon", "Bokakhat", "Jorhat", "Sivasager", "Moran", "Dibrugarh", "Tinsukia"
+        "Nagaon", "Bokakhat", "Jorhat", "Sivasager", "Moran", "Dibrugarh", "Tinsukia"
       ],
       fare: 1.66,
       start_time: "7:30",

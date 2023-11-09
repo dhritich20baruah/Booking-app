@@ -45,14 +45,22 @@ app.post('/newBus', (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     }
 }));
 app.get('/getBus', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { origin, destination, doj } = req.body;
     try {
-        // const busDetails = await Bus.find({})
-        for (let i = 0; i < busData_1.default.length; i++) {
-            for (let j = 0; j < busData_1.default[i].stoppages.length - 1; j++) {
-                console.log(busData_1.default[i].stoppages[j].name, busData_1.default[i].stoppages[j].distance_from_last, busData_1.default[i].stoppages[j + 1].name, busData_1.default[i].stoppages[j + 1].distance_from_last);
+        function searchBusStop(origin) {
+            for (let i = 0; i < busData_1.default.length; i++) {
+                let stoppages = busData_1.default[i].stoppages;
+                for (let j = 0; j < stoppages.length; j++) {
+                    if (stoppages[j] == origin) {
+                        return busData_1.default[i].name;
+                    }
+                }
             }
         }
-        res.status(200).json({ busData: busData_1.default });
+        const result = searchBusStop(origin);
+        console.log(result);
+        // const busDetails = await Bus.find({})
+        res.status(200).json({ result });
     }
     catch (err) {
         console.error(err);
