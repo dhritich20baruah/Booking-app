@@ -43,20 +43,15 @@ app.post('/newBus', async (req: Request, res: Response)=>{
 app.get('/getBus', async (req: Request, res: Response)=>{
   const {origin, destination, doj} = req.body
   try{
-    function searchBusStop(origin: string){
-      for (let i =0; i<busData.length; i++){
-        let stoppages = busData[i].stoppages
-        for(let j=0; j<stoppages.length; j++){
-          if(stoppages[j] == origin){
-            return busData[i].name
-          }
-        }
-      }
-    }
-    const result = searchBusStop(origin)
-    console.log(result)
-    // const busDetails = await Bus.find({})
-    res.status(200).json({result})
+   function searchBus(origin: string, destination: string): Bus[]{
+    return busData.filter((bus)=>{
+      const originIndex = bus.stoppages.indexOf(origin);
+      const destinationIndex = bus.stoppages.indexOf(destination);
+
+      return originIndex !== -1 && destinationIndex !== -1 && originIndex < destinationIndex
+    })
+   }
+   
   }
   catch (err) {
     console.error(err);
