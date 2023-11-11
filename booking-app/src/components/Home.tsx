@@ -29,7 +29,7 @@ const Home = () => {
     }
 
     try{
-      const response = await axios.post('http://localhost:5000/searchBuses', searchObj)
+      const response = await axios.post('http://localhost:5000/getBus', searchObj)
       redirect('/Buses')
     }
     catch(error){

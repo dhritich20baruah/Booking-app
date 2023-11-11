@@ -100,17 +100,3 @@ function calculateTotalFare(origin, destination) {
     return totalDistance;
 }
 exports.calculateTotalFare = calculateTotalFare;
-// const matchedBuses = searchBus(origin, destination)
-// const busesWithFare = matchedBuses.map((bus) => {
-//   const fareObject = busData.find((data) => data.name === bus.name);
-//   if (!fareObject) {
-//     return bus;
-//   }
-//   const { distance, totalFare } = calculateTotalDistance(origin, destination, fareObject.fare);
-//   return {
-//     ...bus,
-//     fare: fareObject.fare,
-//     totalDistance: distance,
-//     totalFare,
-//   };
-// });
