@@ -49,7 +49,7 @@ interface Stoppage {
       },
   ]
   
-  const busData: Bus[] = [
+export const busData: Bus[] = [
     {
       name: "Network Travels",
       details: "Non A/C Seater Pushback 2+1",
@@ -88,5 +88,56 @@ interface Stoppage {
     },
   ];
   
-  export default busData;
+
+export default function searchBus(origin: string, destination: string): Bus[]{
+    return busData.filter((bus)=>{
+      const originIndex = bus.stoppages.indexOf(origin);
+      const destinationIndex = bus.stoppages.indexOf(destination);
+
+      return originIndex !== -1 && destinationIndex !== -1 && originIndex < destinationIndex
+    })
+   }
+
+
+  
+export function calculateTotalFare(origin: string, destination: string): number {
+    const bus = busData.find((bus) => bus.stoppages.includes(origin) && bus.stoppages.includes(destination));
+  
+    if (!bus) {
+      return 0; // Bus not found for the given origin and destination
+    }
+  
+    const originIndex = bus.stoppages.indexOf(origin);
+    const destinationIndex = bus.stoppages.indexOf(destination);
+  
+    if (originIndex === -1 || destinationIndex === -1 || originIndex >= destinationIndex) {
+      return 0; // Invalid origin or destination
+    }
+  
+    // Sum up distances between origin and destination
+    let totalDistance = 0;
+    for (let i = originIndex; i < destinationIndex; i++) {
+      totalDistance += stops.find(stop => stop.name === bus.stoppages[i])?.distance_from_last || 0;
+    }
+  
+    return totalDistance;
+  }
+  
+  // const matchedBuses = searchBus(origin, destination)
+
+  // const busesWithFare = matchedBuses.map((bus) => {
+  //   const fareObject = busData.find((data) => data.name === bus.name);
+  //   if (!fareObject) {
+  //     return bus;
+  //   }
+
+  //   const { distance, totalFare } = calculateTotalDistance(origin, destination, fareObject.fare);
+
+  //   return {
+  //     ...bus,
+  //     fare: fareObject.fare,
+  //     totalDistance: distance,
+  //     totalFare,
+  //   };
+  // });
   

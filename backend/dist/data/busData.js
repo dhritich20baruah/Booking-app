@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.stops = void 0;
+exports.calculateTotalFare = exports.busData = exports.stops = void 0;
 exports.stops = [
     {
         name: "Guwahati",
@@ -35,7 +35,7 @@ exports.stops = [
         distance_from_last: 47,
     },
 ];
-const busData = [
+exports.busData = [
     {
         name: "Network Travels",
         details: "Non A/C Seater Pushback 2+1",
@@ -73,4 +73,44 @@ const busData = [
         service: "day",
     },
 ];
-exports.default = busData;
+function searchBus(origin, destination) {
+    return exports.busData.filter((bus) => {
+        const originIndex = bus.stoppages.indexOf(origin);
+        const destinationIndex = bus.stoppages.indexOf(destination);
+        return originIndex !== -1 && destinationIndex !== -1 && originIndex < destinationIndex;
+    });
+}
+exports.default = searchBus;
+function calculateTotalFare(origin, destination) {
+    var _a;
+    const bus = exports.busData.find((bus) => bus.stoppages.includes(origin) && bus.stoppages.includes(destination));
+    if (!bus) {
+        return 0; // Bus not found for the given origin and destination
+    }
+    const originIndex = bus.stoppages.indexOf(origin);
+    const destinationIndex = bus.stoppages.indexOf(destination);
+    if (originIndex === -1 || destinationIndex === -1 || originIndex >= destinationIndex) {
+        return 0; // Invalid origin or destination
+    }
+    // Sum up distances between origin and destination
+    let totalDistance = 0;
+    for (let i = originIndex; i < destinationIndex; i++) {
+        totalDistance += ((_a = exports.stops.find(stop => stop.name === bus.stoppages[i])) === null || _a === void 0 ? void 0 : _a.distance_from_last) || 0;
+    }
+    return totalDistance;
+}
+exports.calculateTotalFare = calculateTotalFare;
+// const matchedBuses = searchBus(origin, destination)
+// const busesWithFare = matchedBuses.map((bus) => {
+//   const fareObject = busData.find((data) => data.name === bus.name);
+//   if (!fareObject) {
+//     return bus;
+//   }
+//   const { distance, totalFare } = calculateTotalDistance(origin, destination, fareObject.fare);
+//   return {
+//     ...bus,
+//     fare: fareObject.fare,
+//     totalDistance: distance,
+//     totalFare,
+//   };
+// });

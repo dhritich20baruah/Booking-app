@@ -3,10 +3,10 @@ import cors from "cors"
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 import Bus from "./models/Bus";
+import searchBus from "./data/busData";
+import { calculateTotalFare } from "./data/busData";
 import Journey from "./models/Journey";
 import busData from "./data/busData";
-import { stops } from "./data/busData";
-
 dotenv.config();
 
 const app: Express = express();
@@ -42,22 +42,14 @@ app.post('/newBus', async (req: Request, res: Response)=>{
 
 app.get('/getBus', async (req: Request, res: Response)=>{
   const {origin, destination, doj} = req.body
-  try{
-   function searchBus(origin: string, destination: string): Bus[]{
-    return busData.filter((bus)=>{
-      const originIndex = bus.stoppages.indexOf(origin);
-      const destinationIndex = bus.stoppages.indexOf(destination);
 
-      return originIndex !== -1 && destinationIndex !== -1 && originIndex < destinationIndex
-    })
-   }
-   
-  }
-  catch (err) {
-    console.error(err);
-    res.status(500).json({ error: 'An error occurred' });
-  }
+  const matchBuses = searchBus(origin, destination)
+  const totalDistance = calculateTotalFare(origin, destination)
+  const busList = matchBuses.map((item)=>({...item, fare: item.fare * totalDistance }))
+
+  res.json({buses: busList} )
 })
+
 
 // app.post('/searchBuses', async (req: Request, res: Response)=>{
 //   let {origin, destination, doj} = req.body

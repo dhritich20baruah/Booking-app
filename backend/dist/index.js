@@ -18,6 +18,7 @@ const dotenv_1 = __importDefault(require("dotenv"));
 const mongoose_1 = __importDefault(require("mongoose"));
 const Bus_1 = __importDefault(require("./models/Bus"));
 const busData_1 = __importDefault(require("./data/busData"));
+const busData_2 = require("./data/busData");
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 const port = process.env.PORT;
@@ -46,26 +47,10 @@ app.post('/newBus', (req, res) => __awaiter(void 0, void 0, void 0, function* ()
 }));
 app.get('/getBus', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { origin, destination, doj } = req.body;
-    try {
-        function searchBusStop(origin) {
-            for (let i = 0; i < busData_1.default.length; i++) {
-                let stoppages = busData_1.default[i].stoppages;
-                for (let j = 0; j < stoppages.length; j++) {
-                    if (stoppages[j] == origin) {
-                        return busData_1.default[i].name;
-                    }
-                }
-            }
-        }
-        const result = searchBusStop(origin);
-        console.log(result);
-        // const busDetails = await Bus.find({})
-        res.status(200).json({ result });
-    }
-    catch (err) {
-        console.error(err);
-        res.status(500).json({ error: 'An error occurred' });
-    }
+    const matchBuses = (0, busData_1.default)(origin, destination);
+    const totalDistance = (0, busData_2.calculateTotalFare)(origin, destination);
+    const busList = matchBuses.map((item) => (Object.assign(Object.assign({}, item), { fare: item.fare * totalDistance })));
+    res.json({ buses: busList });
 }));
 // app.post('/searchBuses', async (req: Request, res: Response)=>{
 //   let {origin, destination, doj} = req.body
