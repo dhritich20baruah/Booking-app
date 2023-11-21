@@ -40,7 +40,7 @@ app.post('/newBus', async (req: Request, res: Response)=>{
  
 })
 
-app.get('/getBus', async (req: Request, res: Response)=>{
+app.post('/getBus', async (req: Request, res: Response)=>{
   const {origin, destination, doj} = req.body
 
   const matchBuses = searchBus(origin, destination)
@@ -50,27 +50,6 @@ app.get('/getBus', async (req: Request, res: Response)=>{
   res.json({buses: busList} )
 })
 
-
-// app.post('/searchBuses', async (req: Request, res: Response)=>{
-//   let {origin, destination, doj} = req.body
-
-//   let bus = await Bus.find({})
-
-//   let quotes = await Quotes.find({
-//     $or: [
-//       {
-//         quote: { $regex: searchTermLower },
-//       },
-//       {
-//         quote: { $regex: searchTerm },
-//       },
-//       {
-//         quote: { $regex: searchTermFirst },
-//       },
-//     ],
-//   });
-//   return quotes
-// })
 
 app.listen(port, () => {
   console.log(`[server]: Sever is running at localhost:${port}`);

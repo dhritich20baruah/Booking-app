@@ -113,7 +113,7 @@ const Buses = () => {
           </ul>
         </div>
         <div id="busList" className="w-max-[80%] m-4">
-          {busArray.map((item)=>{
+          {/* {busArray.map((item)=>{
             return(
               <div id="card" className="p-4 grid grid-cols-7 gap-4 w-[100%] border-2 border-gray-600 font-md my-4">
               <div>
@@ -153,7 +153,7 @@ const Buses = () => {
               </div>
             </div>
             )
-          })}
+          })} */}
        
          {!visibility && <SeatPlan />}
         </div>

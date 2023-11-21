@@ -45,31 +45,13 @@ app.post('/newBus', (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         res.status(500).json({ error: 'An error occurred' });
     }
 }));
-app.get('/getBus', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+app.post('/getBus', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { origin, destination, doj } = req.body;
     const matchBuses = (0, busData_1.default)(origin, destination);
     const totalDistance = (0, busData_2.calculateTotalFare)(origin, destination);
     const busList = matchBuses.map((item) => (Object.assign(Object.assign({}, item), { fare: item.fare * totalDistance })));
     res.json({ buses: busList });
 }));
-// app.post('/searchBuses', async (req: Request, res: Response)=>{
-//   let {origin, destination, doj} = req.body
-//   let bus = await Bus.find({})
-//   let quotes = await Quotes.find({
-//     $or: [
-//       {
-//         quote: { $regex: searchTermLower },
-//       },
-//       {
-//         quote: { $regex: searchTerm },
-//       },
-//       {
-//         quote: { $regex: searchTermFirst },
-//       },
-//     ],
-//   });
-//   return quotes
-// })
 app.listen(port, () => {
     console.log(`[server]: Sever is running at localhost:${port}`);
 });

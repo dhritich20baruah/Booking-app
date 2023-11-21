@@ -7,7 +7,7 @@ import logo from "../Images/redbuslogo2.jpg";
 import blackLogo from "../Images/redbusblack.png";
 import ride from "../Images/ride.jpg";
 import train from "../Images/train.jpg";
-import axios from "axios"
+import axios from "axios";
 import { redirect } from "react-router-dom";
 
 const Home = () => {
@@ -23,17 +23,22 @@ const Home = () => {
     "Saikhowa",
   ];
 
-  async function searchBuses(){
+  async function searchBuses() {
     const searchObj = {
-      origin, destination, doj
-    }
+      origin,
+      destination,
+      doj,
+    };
 
-    try{
-      const response = await axios.post('http://localhost:5000/getBus', searchObj)
-      redirect('/Buses')
-    }
-    catch(error){
-      console.log(error)
+    try {
+      const busArr = await axios.post(
+        "http://localhost:3000/getBus",
+        searchObj
+      );
+      console.log(busArr);
+      // redirect('/Buses')
+    } catch (error) {
+      console.log(error);
     }
   }
 
@@ -41,9 +46,10 @@ const Home = () => {
   const [filteredOrigins, setFilteredOrigins] = useState<string[]>([]);
   const [origin, setOrigin] = useRecoilState<string>(originState);
 
-  const [stops, setStops] = useState<string>("")
+  const [stops, setStops] = useState<string>("");
   const [filteredDestinations, setFilteredDestination] = useState<string[]>([]);
-  const [destination, setDestination] = useRecoilState<string>(destinationState);
+  const [destination, setDestination] =
+    useRecoilState<string>(destinationState);
 
   const [doj, setDoj] = useRecoilState<string>(dojState);
 
@@ -128,7 +134,16 @@ const Home = () => {
         </ul>
       </nav>
       <div id="main">
-        <form action="" method="post" id="searchBus" className="absolute top-[30%] left-[68%] translate-x-[-50%] translate-y-[-68%] w-[100vw] flex">
+        <form
+          action=""
+          method="post"
+          id="searchBus"
+          className="absolute top-[30%] left-[68%] translate-x-[-50%] translate-y-[-68%] w-[100vw] flex"
+          onSubmit={(e) => {
+            e.preventDefault();
+            searchBuses();
+          }}
+        >
           <div id="origin">
             <input
               type="text"
@@ -187,7 +202,13 @@ const Home = () => {
             className="font-lg p-[2.7em] h-28 font-bold outline-none border-2 border-gray-500"
             onChange={(event) => setDoj(event.target.value)}
           />
-          <button type="submit" className="bg-red-600 font-bold text-lg p-[2.7em] h-28 text-white rounded-tr-md rounded-br-md" onClick={searchBuses}>SEARCH BUSES</button>
+          <button
+            type="submit"
+            className="bg-red-600 font-bold text-lg p-[2.7em] h-28 text-white rounded-tr-md rounded-br-md"
+            onClick={searchBuses}
+          >
+            SEARCH BUSES
+          </button>
         </form>
       </div>
     </div>
