@@ -6,11 +6,12 @@ import { Link } from "react-router-dom";
 import {useRecoilState, useRecoilValue} from 'recoil'
 import { VisibilityAtom } from "../recoil/atom/Visible";
 import { passengerVisibilitySelector } from "../recoil/selectors/VisibilitySelectors";
+import { BusAtom } from "../recoil/atom/BusAtom";
 import axios from 'axios'
 
 const Buses = () => {
   const [visibility, setVisibility] = useRecoilState(VisibilityAtom);
-  const [busArray, setBusArray] = useState([])
+  const [busList, setBusList] = useRecoilState(BusAtom)
 
   const handleVisible = () => {
     setVisibility((visibility) => !visibility);
@@ -18,16 +19,16 @@ const Buses = () => {
 
   const passengerVisibility = useRecoilValue(passengerVisibilitySelector)
 
-  useEffect(()=>{
-    const getBuses = async () => {
-      await axios.get('http://localhost:3000/getBus')
-      .then((res)=>setBusArray(res.data.busData))
-      .catch((err)=>console.log(err))
-    }
-    getBuses()
-  },[])
+  // useEffect(()=>{
+  //   const getBuses = async () => {
+  //     await axios.get('http://localhost:3000/getBus')
+  //     .then((res)=>setBusArray(res.data.busData))
+  //     .catch((err)=>console.log(err))
+  //   }
+  //   getBuses()
+  // },[])
 
-  console.log(busArray)
+  console.log(busList)
 
   return (
     <main id="buses">

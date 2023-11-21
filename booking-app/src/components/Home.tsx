@@ -9,8 +9,10 @@ import ride from "../Images/ride.jpg";
 import train from "../Images/train.jpg";
 import axios from "axios";
 import { redirect } from "react-router-dom";
+import { BusAtom } from "../recoil/atom/BusAtom";
 
 const Home = () => {
+  const [busList, setBusList] = useRecoilState(BusAtom)
   const stoppages: string[] = [
     "Goalpara",
     "Guwahati",
@@ -35,8 +37,8 @@ const Home = () => {
         "http://localhost:3000/getBus",
         searchObj
       );
-      console.log(busArr);
-      // redirect('/Buses')
+      setBusList(busArr.data.buses)
+      redirect('/Buses')
     } catch (error) {
       console.log(error);
     }
