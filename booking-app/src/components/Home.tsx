@@ -12,7 +12,6 @@ import { redirect } from "react-router-dom";
 import { BusAtom } from "../recoil/atom/BusAtom";
 
 const Home = () => {
-  const [busList, setBusList] = useRecoilState(BusAtom)
   const stoppages: string[] = [
     "Goalpara",
     "Guwahati",
@@ -25,45 +24,16 @@ const Home = () => {
     "Saikhowa",
   ];
 
-  async function searchBuses() {
-    const searchObj = {
-      origin,
-      destination,
-      doj,
-    };
-
-    try {
-      const busArr = await axios.post(
-        "http://localhost:3000/getBus",
-        searchObj
-      );
-      setBusList(busArr.data.buses)
-      redirect('/Buses')
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
   const [places, setPlaces] = useState<string>("");
   const [filteredOrigins, setFilteredOrigins] = useState<string[]>([]);
   const [origin, setOrigin] = useRecoilState<string>(originState);
 
   const [stops, setStops] = useState<string>("");
   const [filteredDestinations, setFilteredDestination] = useState<string[]>([]);
-  const [destination, setDestination] =
-    useRecoilState<string>(destinationState);
+  const [destination, setDestination] = useRecoilState<string>(destinationState);
+  const [busList, setBusList] = useRecoilState(BusAtom);
 
   const [doj, setDoj] = useRecoilState<string>(dojState);
-
-  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const query: string = e.target.value;
-    setPlaces(query);
-    const filteredResult: string[] = stoppages.filter((stopp) =>
-      stopp.toLowerCase().includes(query.toLowerCase())
-    );
-
-    setFilteredOrigins(filteredResult);
-  };
 
   const getOrigin = (stopp: string) => {
     setPlaces(stopp);
@@ -76,14 +46,14 @@ const Home = () => {
     });
   };
 
-  const handleSearchDestination = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSearchOrigin = (e: React.ChangeEvent<HTMLInputElement>) => {
     const query: string = e.target.value;
-    setStops(query);
-    const filteredDestinations: string[] = stoppages.filter((stopp) =>
+    setPlaces(query);
+    const filteredResult: string[] = stoppages.filter((stopp) =>
       stopp.toLowerCase().includes(query.toLowerCase())
     );
 
-    setFilteredDestination(filteredDestinations);
+    setFilteredOrigins(filteredResult);
   };
 
   const getDestination = (stopp: string) => {
@@ -97,8 +67,40 @@ const Home = () => {
     });
   };
 
+  //Function for drop down
+  const handleSearchDestination = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const query: string = e.target.value;
+    setStops(query);
+    const filteredDestinations: string[] = stoppages.filter((stopp) =>
+      stopp.toLowerCase().includes(query.toLowerCase())
+    );
+
+    setFilteredDestination(filteredDestinations);
+  };
+
+  //Search buses
+  async function searchBuses() {
+    const searchObj = {
+      origin,
+      destination,
+      doj,
+    };
+
+    redirect('/Buses')
+
+    try {
+      const busArr = await axios.post(
+        "http://localhost:3000/getBus",
+        searchObj
+      );
+      setBusList(busArr.data.buses)
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   return (
-    <div className="">
+    <div className="home-page">
       <nav className="homeNav flex justify-between">
         <img
           src={logo}
@@ -151,7 +153,7 @@ const Home = () => {
               type="text"
               name="from"
               value={places}
-              onChange={handleSearch}
+              onChange={handleSearchOrigin}
               className="font-lg p-[2.7em] h-28 font-bold outline-none border-2 border-gray-500 rounded-tl-md rounded-bl-md"
               placeholder="From"
             />
