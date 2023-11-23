@@ -7,11 +7,17 @@ import {useRecoilState, useRecoilValue} from 'recoil'
 import { VisibilityAtom } from "../recoil/atom/Visible";
 import { passengerVisibilitySelector } from "../recoil/selectors/VisibilitySelectors";
 import { BusAtom } from "../recoil/atom/BusAtom";
+import { originState } from "../recoil/atom/JourneyAtom";
+import { destinationState } from "../recoil/atom/JourneyAtom";
 import axios from 'axios'
 
 const Buses = () => {
   const [visibility, setVisibility] = useRecoilState(VisibilityAtom);
   const [busList, setBusList] = useRecoilState(BusAtom)
+  const origin = useRecoilValue(originState);
+  const destination = useRecoilValue(destinationState);
+
+  console.log(origin)
 
   const handleVisible = () => {
     setVisibility((visibility) => !visibility);
@@ -55,13 +61,13 @@ const Buses = () => {
         </ul>
       </nav>
       <p id="busRoute" className="m-4">
-        <strong>Home</strong> &gt; Bus TIckets &gt; Guwahati To Dibrugarh Bus
+        <strong>Home</strong> &gt; Bus TIckets &gt; {origin} To {destination} Bus
         &gt;
       </p>
       <hr />
       <p id="travelPlan" className="flex font-bold m-4">
         {" "}
-        Guwahati <i className="material-icons">arrow_forward</i> Dibrugarh{" "}
+        {origin} <i className="material-icons">arrow_forward</i> {destination}{" "}
         <i className="material-icons">chevron_left</i>10 Oct Tue{" "}
         <i className="material-icons">chevron_right</i>
         <button>Modify</button>

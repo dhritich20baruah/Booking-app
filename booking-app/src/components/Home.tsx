@@ -8,8 +8,8 @@ import blackLogo from "../Images/redbusblack.png";
 import ride from "../Images/ride.jpg";
 import train from "../Images/train.jpg";
 import axios from "axios";
-import { redirect } from "react-router-dom";
 import { BusAtom } from "../recoil/atom/BusAtom";
+import Buses from "./Buses";
 
 const Home = () => {
   const stoppages: string[] = [
@@ -86,7 +86,6 @@ const Home = () => {
       doj,
     };
 
-    redirect('/Buses')
 
     try {
       const busArr = await axios.post(
@@ -94,6 +93,8 @@ const Home = () => {
         searchObj
       );
       setBusList(busArr.data.buses)
+      console.log(busList, origin, destination)
+      // window.location.href = '/Buses'
     } catch (error) {
       console.log(error);
     }
@@ -214,6 +215,9 @@ const Home = () => {
             SEARCH BUSES
           </button>
         </form>
+      </div>
+      <div>
+        <Buses/>
       </div>
     </div>
   );
