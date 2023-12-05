@@ -8,6 +8,7 @@ import blackLogo from "../Images/redbusblack.png";
 import ride from "../Images/ride.jpg";
 import train from "../Images/train.jpg";
 import axios from "axios";
+import { VisibilityAtom } from "../recoil/atom/Visible";
 import { BusAtom } from "../recoil/atom/BusAtom";
 import Buses from "./Buses";
 
@@ -35,11 +36,11 @@ const Home = () => {
 
   const [doj, setDoj] = useRecoilState<string>(dojState);
 
-  const [visible, setVisible] = useState(true);
+  const [visibility, setVisibility] = useRecoilState(VisibilityAtom);
 
   
   const handleVisible = () => {
-    setVisible((visible) => !visible);
+    setVisibility(visibility => !visibility);
   };
 
   const getOrigin = (stopp: string) => {
@@ -92,15 +93,13 @@ const Home = () => {
       destination,
       doj,
     };
-
-
+    handleVisible()
     try {
       const busArr = await axios.post(
         "http://localhost:3000/getBus",
         searchObj
       );
       setBusList(busArr.data.buses)
-      handleVisible()
     } catch (error) {
       console.log(error);
     }
@@ -108,6 +107,9 @@ const Home = () => {
 
   return (
     <div className="home-page">
+      {visibility ?
+      (
+      <div>
       <nav className="homeNav flex justify-between">
         <img
           src={logo}
@@ -222,9 +224,13 @@ const Home = () => {
           </button>
         </form>
       </div>
-      <div>
-        {visible && <Buses/> }
       </div>
+      )
+      :
+      <div>
+        <Buses/> 
+      </div>
+      }
     </div>
   );
 };

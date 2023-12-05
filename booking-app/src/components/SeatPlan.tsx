@@ -1,15 +1,9 @@
 import {useRecoilState} from 'recoil'
-import { VisibilityAtom } from "../recoil/atom/Visible";
 import { passengerVisibilitySelector } from "../recoil/selectors/VisibilitySelectors";
 
 const SeatPlan = () => {
   const right = [...Array(24).keys()].map((i) => i + 1);
   const left = Array.from({ length: 48 - 25 + 1 }, (_, index) => 25 + index);
-  const [, setVisibility] = useRecoilState(VisibilityAtom);
-
-  const handleVisible = () => {
-    setVisibility((visibility) => !visibility);
-  };
 
   const [, setPassengerVisibility] = useRecoilState(passengerVisibilitySelector);
 
@@ -63,9 +57,6 @@ const SeatPlan = () => {
         <p className='font-bold'>Total Fare: INR 875</p>
         <button onClick={handlePassengerVisible} className='bg-red-600 p-4 text-white hover:bg-red-700 hover:cursor-pointer'>CONTINUE</button>
       </div>
-      <i className="material-icons" style={{ margin: "10px" }} onClick={handleVisible}>
-        highlight_off
-      </i>
     </section>
   );
 };

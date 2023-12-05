@@ -4,10 +4,11 @@ import PassengerDetails from "./PassengerDetails";
 import { Link } from "react-router-dom";
 import {useRecoilState, useRecoilValue} from 'recoil'
 import { VisibilityAtom } from "../recoil/atom/Visible";
-import { passengerVisibilitySelector } from "../recoil/selectors/VisibilitySelectors";
+import { passengerVisibilitySelector} from "../recoil/selectors/VisibilitySelectors";
 import { BusAtom } from "../recoil/atom/BusAtom";
 import { originState } from "../recoil/atom/JourneyAtom";
 import { destinationState } from "../recoil/atom/JourneyAtom";
+import { useState } from "react";
 
 type busArr =  {
   name: string;
@@ -25,13 +26,19 @@ const Buses = () => {
   const [busList] = useRecoilState<busArr[]>(BusAtom)
   const origin = useRecoilValue(originState);
   const destination = useRecoilValue(destinationState);
-
-
+  
+  
   const handleVisible = () => {
-    setVisibility((visibility) => !visibility);
+    setVisibility(visibility => !visibility);
   };
-
+  
   const passengerVisibility = useRecoilValue(passengerVisibilitySelector)
+
+  const [seatVisibility, setSeatVisibility] = useState(false);
+
+  const handleSeatVisible = () => {
+    setSeatVisibility((seatVisibility) => !seatVisibility);
+  };
 
   console.log("Buses: ",busList)
 
@@ -45,8 +52,6 @@ const Buses = () => {
           </li>
           </Link>
           <li>BUS TICKETS</li>
-          <li>rYde</li>
-          <li>redRail</li>
         </ul>
         <ul className="flex items-center mx-[2em] space-x-[2em]">
           <li>Help</li>
@@ -60,7 +65,7 @@ const Buses = () => {
         </ul>
       </nav>
       <p id="busRoute" className="m-4">
-        <strong>Home</strong> &gt; Bus TIckets &gt; {origin} To {destination} Bus
+        <strong>Home</strong> &gt; Bus Tickets &gt; {origin} To {destination} Bus
         &gt;
       </p>
       <hr />
@@ -69,7 +74,7 @@ const Buses = () => {
         {origin} <i className="material-icons">arrow_forward</i> {destination}{" "}
         <i className="material-icons">chevron_left</i>10 Oct Tue{" "}
         <i className="material-icons">chevron_right</i>
-        <button>Modify</button>
+        <button className="mx-1 p-1 text-white bg-red-500 rounded-md hover:cursor-pointer" onClick={handleVisible}>Modify</button>
       </p>
       <hr />
       <section id="busSelection" className="flex">
@@ -155,13 +160,17 @@ const Buses = () => {
                 <p>8 Single</p>
                 <br />
                 <br />
-                <button onClick={handleVisible} className="bg-red-600 p-4 text-white hover:cursor-pointer hover:bg-red-700">VIEW SEATS</button>
+                {!seatVisibility ?
+                <button onClick={handleSeatVisible} className="bg-red-600 p-4 text-white hover:cursor-pointer hover:bg-red-700">VIEW SEATS</button>
+                :
+                <button onClick={handleSeatVisible} className="bg-red-600 p-4 text-white hover:cursor-pointer hover:bg-red-700">HIDE SEATS</button>
+                }
               </div>
             </div>
             )
           })}
        
-         {!visibility && <SeatPlan />}
+         {seatVisibility && <SeatPlan />}
         </div>
       </section>
       {passengerVisibility && <PassengerDetails />}
