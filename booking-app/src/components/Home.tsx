@@ -31,9 +31,16 @@ const Home = () => {
   const [stops, setStops] = useState<string>("");
   const [filteredDestinations, setFilteredDestination] = useState<string[]>([]);
   const [destination, setDestination] = useRecoilState<string>(destinationState);
-  const [busList, setBusList] = useRecoilState(BusAtom);
+  const [, setBusList] = useRecoilState(BusAtom);
 
   const [doj, setDoj] = useRecoilState<string>(dojState);
+
+  const [visible, setVisible] = useState(true);
+
+  
+  const handleVisible = () => {
+    setVisible((visible) => !visible);
+  };
 
   const getOrigin = (stopp: string) => {
     setPlaces(stopp);
@@ -93,8 +100,7 @@ const Home = () => {
         searchObj
       );
       setBusList(busArr.data.buses)
-      console.log(busList, origin, destination)
-      // window.location.href = '/Buses'
+      handleVisible()
     } catch (error) {
       console.log(error);
     }
@@ -217,7 +223,7 @@ const Home = () => {
         </form>
       </div>
       <div>
-        <Buses/>
+        {visible && <Buses/> }
       </div>
     </div>
   );

@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import redLogo from "../Images/redbuslogo.jpg";
 import SeatPlan from "./SeatPlan";
 import PassengerDetails from "./PassengerDetails";
@@ -9,15 +8,24 @@ import { passengerVisibilitySelector } from "../recoil/selectors/VisibilitySelec
 import { BusAtom } from "../recoil/atom/BusAtom";
 import { originState } from "../recoil/atom/JourneyAtom";
 import { destinationState } from "../recoil/atom/JourneyAtom";
-import axios from 'axios'
+
+type busArr =  {
+  name: string;
+  details: string;
+  total_seats: number;
+  stoppages: Array<string>;
+  fare: number;
+  start_time: string;
+  speed?: number;
+  service: "day" | "night";
+}
 
 const Buses = () => {
   const [visibility, setVisibility] = useRecoilState(VisibilityAtom);
-  const [busList, setBusList] = useRecoilState(BusAtom)
+  const [busList] = useRecoilState<busArr[]>(BusAtom)
   const origin = useRecoilValue(originState);
   const destination = useRecoilValue(destinationState);
 
-  console.log(origin)
 
   const handleVisible = () => {
     setVisibility((visibility) => !visibility);
@@ -25,16 +33,7 @@ const Buses = () => {
 
   const passengerVisibility = useRecoilValue(passengerVisibilitySelector)
 
-  // useEffect(()=>{
-  //   const getBuses = async () => {
-  //     await axios.get('http://localhost:3000/getBus')
-  //     .then((res)=>setBusArray(res.data.busData))
-  //     .catch((err)=>console.log(err))
-  //   }
-  //   getBuses()
-  // },[])
-
-  console.log(busList)
+  console.log("Buses: ",busList)
 
   return (
     <main id="buses">
@@ -120,7 +119,7 @@ const Buses = () => {
           </ul>
         </div>
         <div id="busList" className="w-max-[80%] m-4">
-          {/* {busArray.map((item)=>{
+          {busList.map((item)=>{
             return(
               <div id="card" className="p-4 grid grid-cols-7 gap-4 w-[100%] border-2 border-gray-600 font-md my-4">
               <div>
@@ -132,7 +131,7 @@ const Buses = () => {
                 <p className="font-bold text-lg">20:30</p>
                 <br />
                 <br />
-                <p>{item.start}</p>
+                <p>{item.start_time}</p>
               </div>
               <div>
                 <p>09h 20m</p>
@@ -140,7 +139,7 @@ const Buses = () => {
               <div>
                 <p className="font-bold text-lg">05:50</p>
                 <p>11-Oct</p>
-                <p>{item.end}</p>
+                <p>item.end_time</p>
               </div>
               <div>
                 <p className="font-bold text-lg">
@@ -160,7 +159,7 @@ const Buses = () => {
               </div>
             </div>
             )
-          })} */}
+          })}
        
          {!visibility && <SeatPlan />}
         </div>
