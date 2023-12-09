@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.calculateTotalFare = exports.busData = exports.stops = void 0;
+exports.getTravelTime = exports.calculateTotalFare = exports.busData = exports.stops = void 0;
+const date_fns_1 = require("date-fns");
 exports.stops = [
     {
         name: "Guwahati",
@@ -19,7 +20,7 @@ exports.stops = [
         distance_from_last: 68,
     },
     {
-        name: "Sivasagar",
+        name: "Sivsagar",
         distance_from_last: 57,
     },
     {
@@ -41,7 +42,7 @@ exports.busData = [
         details: "Non A/C Seater Pushback 2+1",
         total_seats: 35,
         stoppages: [
-            "Guwahati", "Nagaon", "Bokakhat", "Jorhat", "Sivasager", "Moran", "Dibrugarh", "Tinsukia"
+            "Guwahati", "Nagaon", "Bokakhat", "Jorhat", "Sivsagar", "Moran", "Dibrugarh", "Tinsukia"
         ],
         fare: 1.44,
         start_time: "20:00",
@@ -53,7 +54,7 @@ exports.busData = [
         details: "Volvo A/C Pushback 2+2",
         total_seats: 48,
         stoppages: [
-            "Guwahati", "Nagaon", "Bokakhat", "Jorhat", "Sivasager", "Moran", "Dibrugarh"
+            "Guwahati", "Nagaon", "Bokakhat", "Jorhat", "Sivsagar", "Moran", "Dibrugarh"
         ],
         fare: 2.16,
         start_time: "08:30",
@@ -65,10 +66,10 @@ exports.busData = [
         details: "Bharat Benz A/C 2+1 Seater",
         total_seats: 35,
         stoppages: [
-            "Nagaon", "Bokakhat", "Jorhat", "Sivasager", "Moran", "Dibrugarh", "Tinsukia"
+            "Nagaon", "Bokakhat", "Jorhat", "Sivsagar", "Moran", "Dibrugarh", "Tinsukia"
         ],
         fare: 1.66,
-        start_time: "7:30",
+        start_time: "07:30",
         speed: 42,
         service: "day",
     },
@@ -100,3 +101,41 @@ function calculateTotalFare(origin, destination) {
     return totalDistance;
 }
 exports.calculateTotalFare = calculateTotalFare;
+function getTravelTime(origin, destination, doj) {
+    const bus = exports.busData.find((bus) => {
+        const originIndex = bus.stoppages.indexOf(origin);
+        const destinationIndex = bus.stoppages.indexOf(destination);
+        return originIndex !== -1 && destinationIndex !== -1 && originIndex < destinationIndex;
+    });
+    if (!bus) {
+        return null; // No matching bus found
+    }
+    const originIndex = bus.stoppages.indexOf(origin);
+    const destinationIndex = bus.stoppages.indexOf(destination);
+    if (originIndex === -1 || destinationIndex === -1 || originIndex >= destinationIndex) {
+        return null; // Invalid origin or destination
+    }
+    // Calculate total distance and time
+    let totalDistance = 0;
+    let totalTime = 0;
+    for (let i = originIndex; i < destinationIndex; i++) {
+        const stop = exports.stops.find((s) => s.name === bus.stoppages[i]);
+        if (!stop) {
+            return null; // Stop not found
+        }
+        totalDistance += stop.distance_from_last;
+        totalTime += (stop.distance_from_last / bus.speed) * 60; // Convert distance to time in minutes
+    }
+    const startTime = new Date(`${doj}` + 'T' + `${bus.start_time}`);
+    const endTime = new Date(startTime.getTime() + totalTime * 60 * 1000); // Convert time back to milliseconds
+    if (isNaN(endTime.getTime())) {
+        return null; // Invalid time
+    }
+    return {
+        startDate: (0, date_fns_1.format)(startTime, 'yyyy-MM-dd'),
+        startTime: (0, date_fns_1.format)(startTime, 'HH:mm'),
+        endDate: (0, date_fns_1.format)(endTime, 'yyyy-MM-dd'),
+        endTime: (0, date_fns_1.format)(endTime, 'HH:mm'), // Format the time
+    };
+}
+exports.getTravelTime = getTravelTime;

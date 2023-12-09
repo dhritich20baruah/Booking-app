@@ -5,6 +5,7 @@ import mongoose from "mongoose";
 import Bus from "./models/Bus";
 import searchBus from "./data/busData";
 import { calculateTotalFare } from "./data/busData";
+import { getTravelTime } from "./data/busData";
 import Journey from "./models/Journey";
 import busData from "./data/busData";
 dotenv.config();
@@ -42,10 +43,19 @@ app.post('/newBus', async (req: Request, res: Response)=>{
 
 app.post('/getBus', async (req: Request, res: Response)=>{
   const {origin, destination, doj} = req.body
+  const inputDoj = doj;
+  const formattedDoj = inputDoj.replace(/^(\d{2})\/(\d{2})\/(\d{4})$/, "$3-$2-$1");
 
   const matchBuses = searchBus(origin, destination)
   const totalDistance = calculateTotalFare(origin, destination)
-  const busList = matchBuses.map((item)=>({...item, fare: item.fare * totalDistance }))
+  const busList = matchBuses.map((item)=>{
+    const travelTime = getTravelTime(origin, destination, formattedDoj)
+    return {
+      ...item,
+      fare: Math.ceil(item.fare * totalDistance),
+      travelTime
+    }
+  })
 
   res.json({buses: busList} )
 })
