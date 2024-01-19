@@ -125,50 +125,107 @@ export function calculateTotalFare(origin: string, destination: string): number 
     return totalDistance;
   }
   
-export function getTravelTime(origin: string, destination: string, doj: string): { startDate: string, startTime: string, endDate: string, endTime: string } | null {
-  const bus = busData.find((bus) => {
-    const originIndex = bus.stoppages.indexOf(origin);
-    const destinationIndex = bus.stoppages.indexOf(destination);
+// export function getTravelTime(origin: string, destination: string, doj: string): { startDate: string, startTime: string, endDate: string, endTime: string } | null {
+//   const bus = busData.find((bus) => {
+//     const originIndex = bus.stoppages.indexOf(origin);
+//     const destinationIndex = bus.stoppages.indexOf(destination);
 
-    return originIndex !== -1 && destinationIndex !== -1 && originIndex < destinationIndex;
-  });
+//     return originIndex !== -1 && destinationIndex !== -1 && originIndex < destinationIndex;
+//   });
 
-  if (!bus) {
-    return null; // No matching bus found
-  }
+//   if (!bus) {
+//     return null; // No matching bus found
+//   }
 
-    const originIndex = bus.stoppages.indexOf(origin);
-    const destinationIndex = bus.stoppages.indexOf(destination);
+//     const originIndex = bus.stoppages.indexOf(origin);
+//     const destinationIndex = bus.stoppages.indexOf(destination);
   
-    if (originIndex === -1 || destinationIndex === -1 || originIndex >= destinationIndex) {
-      return null; // Invalid origin or destination
-    }
+//     if (originIndex === -1 || destinationIndex === -1 || originIndex >= destinationIndex) {
+//       return null; // Invalid origin or destination
+//     }
   
-    // Calculate total distance and time
-    let totalDistance = 0;
-    let totalTime = 0;
+//     // Calculate total distance and time
+//     let totalDistance = 0;
+//     let totalTime = 0;
   
-    for (let i = originIndex; i < destinationIndex; i++) {
-      const stop = stops.find((s) => s.name === bus.stoppages[i]);
+//     for (let i = originIndex; i < destinationIndex; i++) {
+//       const stop = stops.find((s) => s.name === bus.stoppages[i]);
   
-      if (!stop) {
-        return null; // Stop not found
+//       if (!stop) {
+//         return null; // Stop not found
+//       }
+  
+//       totalDistance += stop.distance_from_last;
+//       totalTime += (stop.distance_from_last / bus.speed!) * 60; // Convert distance to time in minutes
+//     }
+  
+//     const startTime = new Date(`${doj}`+'T'+`${bus.start_time}`);
+//     const endTime = new Date(startTime.getTime() + totalTime * 60 * 1000); // Convert time back to milliseconds
+//     if (isNaN(endTime.getTime())) {
+//       return null; // Invalid time
+//     }
+
+//     return {
+//       startDate: format(startTime, 'yyyy-MM-dd'), // Format the date
+//       startTime: format(startTime, 'HH:mm'), // Format the time
+//       endDate: format(endTime, 'yyyy-MM-dd'), // Format the date
+//       endTime: format(endTime, 'HH:mm'), // Format the time
+//     };
+//   }
+
+interface TravelTime {
+  startDate: string;
+  startTime: string;
+  endDate: string;
+  endTime: string;
+}
+
+interface BusWithTravelTime extends Bus {
+  travelTime: TravelTime;
+}
+
+export function getTravelTime(origin: string, destination: string, doj: string): { buses: BusWithTravelTime[] } {
+    const result: BusWithTravelTime[] = [];
+  
+    for (const bus of busData) {
+      const originIndex = bus.stoppages.indexOf(origin);
+      const destinationIndex = bus.stoppages.indexOf(destination);
+  
+      if (originIndex !== -1 && destinationIndex !== -1 && originIndex < destinationIndex) {
+        // Calculate total distance and time
+        let totalDistance = 0;
+        let totalTime = 0;
+  
+        for (let i = originIndex; i < destinationIndex; i++) {
+          const stop = stops.find((s) => s.name === bus.stoppages[i]);
+  
+          if (!stop) {
+            return { buses: [] }; // Stop not found
+          }
+  
+          totalDistance += stop.distance_from_last;
+          totalTime += (stop.distance_from_last / bus.speed!) * 60; // Convert distance to time in minutes
+        }
+  
+        const startTime = new Date(`${doj}T${bus.start_time}`);
+        const endTime = new Date(startTime.getTime() + totalTime * 60 * 1000); // Convert time back to milliseconds
+        if (isNaN(endTime.getTime())) {
+          return { buses: [] }; // Invalid time
+        }
+  
+        const travelTime: TravelTime = {
+          startDate: format(startTime, 'yyyy-MM-dd'), // Format the date
+          startTime: format(startTime, 'HH:mm'), // Format the time
+          endDate: format(endTime, 'yyyy-MM-dd'), // Format the date
+          endTime: format(endTime, 'HH:mm'), // Format the time
+        };
+  
+        result.push({
+          ...bus,
+          travelTime,
+        });
       }
-  
-      totalDistance += stop.distance_from_last;
-      totalTime += (stop.distance_from_last / bus.speed!) * 60; // Convert distance to time in minutes
     }
   
-    const startTime = new Date(`${doj}`+'T'+`${bus.start_time}`);
-    const endTime = new Date(startTime.getTime() + totalTime * 60 * 1000); // Convert time back to milliseconds
-    if (isNaN(endTime.getTime())) {
-      return null; // Invalid time
-    }
-
-    return {
-      startDate: format(startTime, 'yyyy-MM-dd'), // Format the date
-      startTime: format(startTime, 'HH:mm'), // Format the time
-      endDate: format(endTime, 'yyyy-MM-dd'), // Format the date
-      endTime: format(endTime, 'HH:mm'), // Format the time
-    };
+    return { buses: result };
   }

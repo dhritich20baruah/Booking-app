@@ -7,7 +7,7 @@ const PORT = 5000
 app.use(express.json())
 app.use(cors())
 
-const { searchBus, calculateTotalFare, getTravelTime } = require('./data/busData');
+const { calculateTotalFare, searchBuses } = require('./data/busData');
 
 mongoose
   .connect("mongodb://0.0.0.0:27017/bookingApp")
@@ -23,14 +23,13 @@ app.post('/getBus', async (req, res)=>{
     const inputDoj = doj;
     const formattedDoj = inputDoj.replace(/^(\d{2})\/(\d{2})\/(\d{4})$/, "$3-$2-$1");
   
-    const matchBuses = searchBus(origin, destination)
+    const busArr = searchBuses(origin, destination, formattedDoj)
+
     const totalDistance = calculateTotalFare(origin, destination)
-    const busList = matchBuses.map((item)=>{
-      const travelTime = getTravelTime(origin, destination, formattedDoj)
+    const busList = busArr.buses.map((item)=>{
       return {
         ...item,
-        fare: Math.ceil(item.fare * totalDistance),
-        travelTime
+        fare: Math.ceil(item.fare * totalDistance)
       }
     })
   
