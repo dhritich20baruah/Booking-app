@@ -91,14 +91,14 @@ export const busData: Bus[] = [
   ];
   
 
-export default function searchBus(origin: string, destination: string): Bus[]{
-    return busData.filter((bus)=>{
-      const originIndex = bus.stoppages.indexOf(origin);
-      const destinationIndex = bus.stoppages.indexOf(destination);
+// export default function searchBus(origin: string, destination: string): Bus[]{
+//     return busData.filter((bus)=>{
+//       const originIndex = bus.stoppages.indexOf(origin);
+//       const destinationIndex = bus.stoppages.indexOf(destination);
 
-      return originIndex !== -1 && destinationIndex !== -1 && originIndex < destinationIndex
-    })
-   }
+//       return originIndex !== -1 && destinationIndex !== -1 && originIndex < destinationIndex
+//     })
+//    }
 
 
   
@@ -184,7 +184,7 @@ interface BusWithTravelTime extends Bus {
   travelTime: TravelTime;
 }
 
-export function getTravelTime(origin: string, destination: string, doj: string): { buses: BusWithTravelTime[] } {
+export function searchBus(origin: string, destination: string, doj: string): { buses: BusWithTravelTime[] } {
     const result: BusWithTravelTime[] = [];
   
     for (const bus of busData) {

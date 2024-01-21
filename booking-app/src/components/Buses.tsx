@@ -19,6 +19,15 @@ type busArr =  {
   start_time: string;
   speed?: number;
   service: "day" | "night";
+  travelTime: {
+    startDate: string;
+    startTime: string;
+    endDate: string;
+    endTime: string
+  };
+  origin: string;
+  destination: string;
+  doj: string
 }
 
 const Buses = () => {
@@ -133,18 +142,17 @@ const Buses = () => {
                 <p>{item.details}</p>
               </div>
               <div>
-                <p className="font-bold text-lg">20:30</p>
-                <br />
-                <br />
-                <p>{item.start_time}</p>
+                <p className="font-bold text-lg">{item.start_time}</p>
+                <p>{item.doj}</p>
+                <p>{item.origin}</p>
               </div>
               <div>
-                <p>09h 20m</p>
+                <p>Duration</p>
               </div>
               <div>
-                <p className="font-bold text-lg">05:50</p>
-                <p>11-Oct</p>
-                <p>item.end_time</p>
+                <p className="font-bold text-lg">{item.travelTime.endTime}</p>
+                <p>{item.travelTime.endDate}</p>
+                <p>{item.destination}</p>
               </div>
               <div>
                 <p className="font-bold text-lg">

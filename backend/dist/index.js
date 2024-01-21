@@ -17,9 +17,10 @@ const cors_1 = __importDefault(require("cors"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const mongoose_1 = __importDefault(require("mongoose"));
 const Bus_1 = __importDefault(require("./models/Bus"));
-const busData_1 = __importDefault(require("./data/busData"));
+// import searchBus from "./data/busData";
+const busData_1 = require("./data/busData");
 const busData_2 = require("./data/busData");
-const busData_3 = require("./data/busData");
+// import busData from "./data/busData";
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 const port = process.env.PORT;
@@ -50,11 +51,10 @@ app.post('/getBus', (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     const { origin, destination, doj } = req.body;
     const inputDoj = doj;
     const formattedDoj = inputDoj.replace(/^(\d{2})\/(\d{2})\/(\d{4})$/, "$3-$2-$1");
-    const matchBuses = (0, busData_1.default)(origin, destination);
+    const busArr = (0, busData_1.searchBus)(origin, destination, formattedDoj);
     const totalDistance = (0, busData_2.calculateTotalFare)(origin, destination);
-    const busList = matchBuses.map((item) => {
-        const travelTime = (0, busData_3.getTravelTime)(origin, destination, formattedDoj);
-        return Object.assign(Object.assign({}, item), { fare: Math.ceil(item.fare * totalDistance), travelTime });
+    const busList = busArr.buses.map((item) => {
+        return Object.assign(Object.assign({}, item), { fare: Math.ceil(item.fare * totalDistance), origin, destination, doj });
     });
     res.json({ buses: busList });
 }));
