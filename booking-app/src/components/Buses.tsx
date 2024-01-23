@@ -31,19 +31,17 @@ type busArr =  {
 }
 
 const Buses = () => {
-  const [visibility, setVisibility] = useRecoilState(VisibilityAtom);
+  const [, setVisibility] = useRecoilState(VisibilityAtom);
   const [busList] = useRecoilState<busArr[]>(BusAtom)
   const origin = useRecoilValue(originState);
   const destination = useRecoilValue(destinationState);
+  const [seatVisibility, setSeatVisibility] = useState(false);
+  const passengerVisibility = useRecoilValue(passengerVisibilitySelector)
   
   
   const handleVisible = () => {
     setVisibility(visibility => !visibility);
   };
-  
-  const passengerVisibility = useRecoilValue(passengerVisibilitySelector)
-
-  const [seatVisibility, setSeatVisibility] = useState(false);
 
   const handleSeatVisible = () => {
     setSeatVisibility((seatVisibility) => !seatVisibility);
@@ -171,14 +169,16 @@ const Buses = () => {
                 {!seatVisibility ?
                 <button onClick={handleSeatVisible} className="bg-red-600 p-4 text-white hover:cursor-pointer hover:bg-red-700">VIEW SEATS</button>
                 :
-                <button onClick={handleSeatVisible} className="bg-red-600 p-4 text-white hover:cursor-pointer hover:bg-red-700">HIDE SEATS</button>
+                <button onClick={handleSeatVisible} className="bg-transparent"></button>
                 }
               </div>
             </div>
             )
           })}
-       
-         {seatVisibility && <SeatPlan />}
+        <div className="fixed shadow-lg shadow-black top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] w-[80%]">
+        
+         {seatVisibility && <div><button onClick={handleSeatVisible} className="bg-red-600 p-4 text-white hover:cursor-pointer hover:bg-red-700">X</button><SeatPlan /></div>}
+        </div>
         </div>
       </section>
       {passengerVisibility && <PassengerDetails />}

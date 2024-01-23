@@ -9,6 +9,15 @@ type Bus = {
   start_time: string;
   speed?: number;
   service: "day" | "night";
+  travelTime: {
+    startDate: string;
+    startTime: string;
+    endDate: string;
+    endTime: string
+  };
+  origin: string;
+  destination: string;
+  doj: string
 };
 
 export const BusAtom = atom<Bus[]>({
