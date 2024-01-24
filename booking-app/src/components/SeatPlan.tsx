@@ -2,7 +2,13 @@ import { useRecoilState } from "recoil";
 import { passengerVisibilitySelector } from "../recoil/selectors/VisibilitySelectors";
 import { useState } from "react";
 
-const SeatPlan = () => {
+type tripObj = {
+  origin: string,
+  destination: string,
+  fare: number
+}
+
+const SeatPlan: React.FC<tripObj> = ({origin, destination, fare}) => {
   const right = [...Array(24).keys()].map((i) => i + 1);
   const left = Array.from({ length: 48 - 25 + 1 }, (_, index) => 25 + index);
   const [selectedSeatArr, setSelectedSeatArr] = useState<string[]>([]);
@@ -25,6 +31,10 @@ const SeatPlan = () => {
     );
     console.log(selectedSeatArr)
   };
+
+  const clearSelection = () => {
+    setSelectedSeatArr([])
+  }
 
   return (
     <section id="seatPlan" className="w-[100%] h-auto bg-gray-300 flex">
@@ -81,16 +91,22 @@ const SeatPlan = () => {
         <p className="font-bold">Boarding Point</p>
         <label htmlFor="boarding">
           <input type="radio" name="boarding" id="boarding" />
-          origin
+          {origin}
         </label>
         <p className="font-bold">Drop Off Point</p>
         <label htmlFor="dropoff">
           <input type="radio" name="dropoff" id="dropoff" />
-          destination
+          {destination}
         </label>
         <hr />
         <div><p className="font-semibold">Seats: </p>{selectedSeatArr.map((seatNums)=>{return(<span className="font-semibold" key={seatNums}>{seatNums}, </span>)})}</div>
-        <p className="font-bold">Total Fare: INR {875 * selectedSeatArr.length}</p>
+        <button
+          onClick={clearSelection}
+          className="bg-red-600 p-4 text-white hover:bg-red-700 hover:cursor-pointer"
+        >
+          CLEAR SELECTION
+        </button>
+        <p className="font-bold">Total Fare: INR {fare * selectedSeatArr.length}</p>
         <button
           onClick={handlePassengerVisible}
           className="bg-red-600 p-4 text-white hover:bg-red-700 hover:cursor-pointer"
