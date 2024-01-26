@@ -1,7 +1,7 @@
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { passengerVisibilitySelector } from "../recoil/selectors/VisibilitySelectors";
 import { useState } from "react";
-
+import PassengerDetails from "./PassengerDetails";
 type tripObj = {
   origin: string,
   destination: string,
@@ -12,6 +12,8 @@ const SeatPlan: React.FC<tripObj> = ({origin, destination, fare}) => {
   const right = [...Array(24).keys()].map((i) => i + 1);
   const left = Array.from({ length: 48 - 25 + 1 }, (_, index) => 25 + index);
   const [selectedSeatArr, setSelectedSeatArr] = useState<string[]>([]);
+  const passengerVisibility = useRecoilValue(passengerVisibilitySelector);
+
   const [, setPassengerVisibility] = useRecoilState(
     passengerVisibilitySelector
   );
@@ -37,7 +39,8 @@ const SeatPlan: React.FC<tripObj> = ({origin, destination, fare}) => {
   }
 
   return (
-    <section id="seatPlan" className="w-[100%] h-auto bg-gray-300 flex">
+    <>
+    <section id="seatPlan" className="h-auto bg-gray-300 flex fixed shadow-lg shadow-black top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] w-[80%]">
       <div id="seat-Selection" className="m-20">
         <div
           id="bus"
@@ -88,33 +91,27 @@ const SeatPlan: React.FC<tripObj> = ({origin, destination, fare}) => {
         id="station"
         className="w-[30%] space-y-2 bg-white p-8 m-12 shadow-lg shadow-black"
       >
-        <p className="font-bold">Boarding Point</p>
-        <label htmlFor="boarding">
-          <input type="radio" name="boarding" id="boarding" />
-          {origin}
-        </label>
-        <p className="font-bold">Drop Off Point</p>
-        <label htmlFor="dropoff">
-          <input type="radio" name="dropoff" id="dropoff" />
-          {destination}
-        </label>
+        <p>Boarding Point: <span className="font-semibold">{origin}</span></p>  
+        <p>Drop Off Point: <span className="font-semibold">{destination}</span></p>  
         <hr />
         <div><p className="font-semibold">Seats: </p>{selectedSeatArr.map((seatNums)=>{return(<span className="font-semibold" key={seatNums}>{seatNums}, </span>)})}</div>
         <button
           onClick={clearSelection}
-          className="bg-red-600 p-4 text-white hover:bg-red-700 hover:cursor-pointer"
+          className="bg-red-600 p-2 text-white hover:bg-red-700 hover:cursor-pointer"
         >
           CLEAR SELECTION
         </button>
         <p className="font-bold">Total Fare: INR {fare * selectedSeatArr.length}</p>
         <button
           onClick={handlePassengerVisible}
-          className="bg-red-600 p-4 text-white hover:bg-red-700 hover:cursor-pointer"
+          className="bg-red-600 p-2 text-white hover:bg-red-700 hover:cursor-pointer"
         >
           CONTINUE
         </button>
       </div>
     </section>
+    {passengerVisibility && <PassengerDetails fare={fare} seatNos={selectedSeatArr}/>}
+    </>
   );
 };
 

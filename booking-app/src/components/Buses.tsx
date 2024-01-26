@@ -1,10 +1,8 @@
 import redLogo from "../Images/redbuslogo.jpg";
 import SeatPlan from "./SeatPlan";
-import PassengerDetails from "./PassengerDetails";
 import { Link } from "react-router-dom";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { VisibilityAtom } from "../recoil/atom/Visible";
-import { passengerVisibilitySelector } from "../recoil/selectors/VisibilitySelectors";
 import { BusAtom } from "../recoil/atom/BusAtom";
 import { originState } from "../recoil/atom/JourneyAtom";
 import { destinationState } from "../recoil/atom/JourneyAtom";
@@ -36,12 +34,16 @@ const Buses = () => {
   const origin = useRecoilValue(originState);
   const destination = useRecoilValue(destinationState);
   const [seatVisibility, setSeatVisibility] = useState(false);
-  const passengerVisibility = useRecoilValue(passengerVisibilitySelector);
+  const [busFare, setbusFare] = useState(0);
 
   const handleVisible = () => {
     setVisibility((visibility) => !visibility);
   };
 
+  const handleFare = (fare:number)=>{
+    setbusFare(fare);
+    handleSeatVisible()
+  }
   const handleSeatVisible = () => {
     setSeatVisibility((seatVisibility) => !seatVisibility);
   };
@@ -216,33 +218,20 @@ const Buses = () => {
                   <p>8 Single</p>
                   <br />
                   <br />
-                  {!seatVisibility ? (
-                    <button
-                      onClick={handleSeatVisible}
-                      className="bg-red-600 p-4 text-white hover:cursor-pointer hover:bg-red-700"
-                    >
-                      VIEW SEATS
-                    </button>
-                  ) : (
-                    <button
-                      onClick={handleSeatVisible}
-                      className="bg-transparent"
-                    ></button>
-                  )}
+                  <button
+                    onClick={() => handleFare(item.fare)}
+                    className="bg-red-600 p-4 text-white hover:cursor-pointer hover:bg-red-700"
+                  >
+                    VIEW SEATS
+                  </button>
                 </div>
-                <div className="fixed shadow-lg shadow-black top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] w-[80%]">
+                <div>
                   {seatVisibility && (
                     <div>
-                      <button
-                        onClick={handleSeatVisible}
-                        className="bg-red-600 p-4 text-white hover:cursor-pointer hover:bg-red-700"
-                      >
-                        X
-                      </button>
                       <SeatPlan
                         origin={item.origin}
                         destination={item.destination}
-                        fare={item.fare}
+                        fare={busFare}
                       />
                     </div>
                   )}
@@ -250,9 +239,16 @@ const Buses = () => {
               </div>
             );
           })}
+          {seatVisibility &&
+           <button
+           onClick={handleSeatVisible}
+           className="bg-red-600 p-4 text-white hover:cursor-pointer hover:bg-red-700 fixed top-[10%] right-[10%]"
+           >
+                    X
+           </button>
+          }
         </div>
       </section>
-      {passengerVisibility && <PassengerDetails />}
     </main>
   );
 };
