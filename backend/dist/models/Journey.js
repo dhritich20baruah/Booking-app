@@ -25,8 +25,8 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importStar(require("mongoose"));
 const journeySchema = new mongoose_1.Schema({
-    pickup: String,
-    drop_off: String,
+    origin: String,
+    destination: String,
     startTime: String,
     endTime: String,
     passenger: String,
@@ -34,11 +34,8 @@ const journeySchema = new mongoose_1.Schema({
     seat_no: String,
     mobile_no: String,
     email: String,
-    gender: String,
     age: String,
-    fare: String,
-    city: String,
-    state: String,
+    fare: String
 });
 const Journey = mongoose_1.default.model('Journey', journeySchema);
 exports.default = Journey;

@@ -20,6 +20,7 @@ const Bus_1 = __importDefault(require("./models/Bus"));
 // import searchBus from "./data/busData";
 const busData_1 = require("./data/busData");
 const busData_2 = require("./data/busData");
+const DailyRecord_1 = __importDefault(require("./models/DailyRecord"));
 // import busData from "./data/busData";
 dotenv_1.default.config();
 const app = (0, express_1.default)();
@@ -57,6 +58,26 @@ app.post('/getBus', (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         return Object.assign(Object.assign({}, item), { fare: Math.ceil(item.fare * totalDistance), origin, destination, doj });
     });
     res.json({ buses: busList });
+}));
+app.post('/bookSeat', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { doj, name, details, total_seats, stoppages, start_time, seat } = req.body;
+        const dailyRecord = new DailyRecord_1.default({
+            doj,
+            name,
+            details,
+            total_seats,
+            stoppages,
+            start_time,
+            seat
+        });
+        yield dailyRecord.save();
+        res.status(201).json({ message: 'Data saved successfully' });
+    }
+    catch (error) {
+        console.error('Error saving data:', error);
+        res.status(500).json({ error: 'Failed to save data' });
+    }
 }));
 app.listen(port, () => {
     console.log(`[server]: Sever is running at localhost:${port}`);

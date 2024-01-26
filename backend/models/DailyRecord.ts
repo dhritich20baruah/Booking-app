@@ -14,11 +14,8 @@ type DailyRecordType =  Document & {
         email: string;
         age: string;
         fare: string;
-        city: string;
-        state: string;
         origin: string;
-        destination: string;
-        stoppages: string[];
+        destination: string
     }[];
 }
 
@@ -31,18 +28,14 @@ const DailyRecordSchema: Schema<DailyRecordType> = new Schema({
     start_time: String,
     seat:[
         {
-        name: String,
+        passenger_name: String,
         seat_no: String,
         mobile_no: String,
         email: String,
-        gender: String,
         age: String,
         fare: String,
-        city: String,
-        state: String,
         origin: String,
-        destination: String,
-        stoppages: [String],
+        destination: String
         }
     ],
 })

@@ -6,7 +6,7 @@ import Bus from "./models/Bus";
 // import searchBus from "./data/busData";
 import { searchBus } from "./data/busData";
 import { calculateTotalFare } from "./data/busData";
-import Journey from "./models/Journey";
+import DailyRecord from "./models/DailyRecord";
 // import busData from "./data/busData";
 dotenv.config();
 
@@ -57,6 +57,31 @@ app.post('/getBus', async (req: Request, res: Response)=>{
   })
 
   res.json({buses: busList} )
+})
+
+app.post('/bookSeat', async (req: Request, res: Response)=>{
+  try {
+    const { doj, name, details, total_seats, stoppages, start_time, seat } = req.body;
+
+    const dailyRecord = new DailyRecord({
+      doj,
+      name,
+      details,
+      total_seats,
+      stoppages,
+      start_time,
+      seat
+    });
+
+    await dailyRecord.save();
+
+    res.status(201).json({ message: 'Data saved successfully' });
+  } catch (error) {
+   
+    console.error('Error saving data:', error);
+    res.status(500).json({ error: 'Failed to save data' });
+  }
+
 })
 
 

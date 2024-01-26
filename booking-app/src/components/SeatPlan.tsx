@@ -5,10 +5,14 @@ import PassengerDetails from "./PassengerDetails";
 type tripObj = {
   origin: string,
   destination: string,
+  doj: string,
+  total_seats: number,
+  stoppages: Array<string>,
+  start_time: string,
   fare: number
 }
 
-const SeatPlan: React.FC<tripObj> = ({origin, destination, fare}) => {
+const SeatPlan: React.FC<tripObj> = ({origin, destination, doj, total_seats, stoppages, start_time, fare}) => {
   const right = [...Array(24).keys()].map((i) => i + 1);
   const left = Array.from({ length: 48 - 25 + 1 }, (_, index) => 25 + index);
   const [selectedSeatArr, setSelectedSeatArr] = useState<string[]>([]);
@@ -102,15 +106,18 @@ const SeatPlan: React.FC<tripObj> = ({origin, destination, fare}) => {
           CLEAR SELECTION
         </button>
         <p className="font-bold">Total Fare: INR {fare * selectedSeatArr.length}</p>
+        { selectedSeatArr.length !==0 ?
         <button
           onClick={handlePassengerVisible}
           className="bg-red-600 p-2 text-white hover:bg-red-700 hover:cursor-pointer"
         >
           CONTINUE
         </button>
+        : <button></button>  
+      }
       </div>
     </section>
-    {passengerVisibility && <PassengerDetails fare={fare} seatNos={selectedSeatArr}/>}
+    {passengerVisibility && <PassengerDetails origin={origin} destination={destination} doj={doj} total_seats={total_seats} stoppages={stoppages} start_time={start_time} fare={fare} seatNos={selectedSeatArr}/>}
     </>
   );
 };

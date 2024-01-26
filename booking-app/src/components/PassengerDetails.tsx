@@ -2,13 +2,17 @@ import { useRecoilState } from "recoil";
 import { passengerVisibilitySelector } from "../recoil/selectors/VisibilitySelectors";
 
 type passengerObj = {
-  // origin: string,
-  // destination: string,
-  fare: number;
+  origin: string,
+  destination: string,
+  doj: string,
+  total_seats: number,
+  stoppages: Array<string>,
+  start_time: string,
+  fare: number
   seatNos: Array<string>;
 };
 
-const PassengerDetails: React.FC<passengerObj> = ({ fare, seatNos }) => {
+const PassengerDetails: React.FC<passengerObj> = ({doj, total_seats, stoppages, start_time, fare, seatNos }) => {
   const [, setPassengerVisibility] = useRecoilState(
     passengerVisibilitySelector
   );

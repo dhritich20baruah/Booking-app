@@ -231,6 +231,10 @@ const Buses = () => {
                       <SeatPlan
                         origin={item.origin}
                         destination={item.destination}
+                        doj={item.doj}
+                        total_seats={item.total_seats}
+                        stoppages={item.stoppages}
+                        start_time={item.start_time}
                         fare={busFare}
                       />
                     </div>

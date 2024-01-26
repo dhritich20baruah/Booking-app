@@ -1,8 +1,8 @@
 import mongoose, { Schema, Document, Model } from 'mongoose';
 
 type JourneyType =  Document & {
-    pickup: string;
-    drop_off: string;
+    origin: string;
+    destination: string;
     startTime: string;
     endTime: string;
     passenger: string;
@@ -10,16 +10,13 @@ type JourneyType =  Document & {
     seat_no: string;
     mobile_no: string;
     email: string;
-    gender: string;
     age: string;
     fare: string;
-    city: string;
-    state: string
 }
 
 const journeySchema: Schema<JourneyType> = new Schema({
-    pickup: String,
-    drop_off: String,
+    origin: String,
+    destination: String,
     startTime: String,
     endTime: String,
     passenger: String,
@@ -27,11 +24,8 @@ const journeySchema: Schema<JourneyType> = new Schema({
     seat_no: String,
     mobile_no: String,
     email: String,
-    gender: String,
     age: String,
-    fare: String,
-    city: String,
-    state: String,
+    fare: String
 })
 
 const Journey: Model<JourneyType> = mongoose.model<JourneyType>('Journey', journeySchema);
