@@ -229,6 +229,7 @@ const Buses = () => {
                   {seatVisibility && (
                     <div>
                       <SeatPlan
+                        busName={item.name}
                         origin={item.origin}
                         destination={item.destination}
                         doj={item.doj}

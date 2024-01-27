@@ -26,21 +26,20 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importStar(require("mongoose"));
 const DailyRecordSchema = new mongoose_1.Schema({
     doj: String,
-    name: String,
-    details: String,
+    origin: String,
+    destination: String,
+    busName: String,
     total_seats: Number,
     stoppages: (Array),
     start_time: String,
+    fare: String,
     seat: [
         {
             passenger_name: String,
             seat_no: String,
             mobile_no: String,
             email: String,
-            age: String,
-            fare: String,
-            origin: String,
-            destination: String
+            age: String
         }
     ],
 });

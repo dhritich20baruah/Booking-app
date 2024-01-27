@@ -61,14 +61,16 @@ app.post('/getBus', (req, res) => __awaiter(void 0, void 0, void 0, function* ()
 }));
 app.post('/bookSeat', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { doj, name, details, total_seats, stoppages, start_time, seat } = req.body;
+        const { doj, origin, destination, busName, total_seats, stoppages, start_time, fare, seat } = req.body;
         const dailyRecord = new DailyRecord_1.default({
             doj,
-            name,
-            details,
+            origin,
+            destination,
+            busName,
             total_seats,
             stoppages,
             start_time,
+            fare,
             seat
         });
         yield dailyRecord.save();
