@@ -81,11 +81,11 @@ const PassengerDetails: React.FC<passengerObj> = ({
   // ) => {
   //   const { name, value } = e.target;
   //   if (index !== undefined) {
-  //     const newSeat = [...formData.seat];
+  //     const newSeat = [...passengerObj.seat];
   //     newSeat[index][name] = value;
-  //     setFormData({ ...formData, seat: newSeat });
+  //     setPassengerObj({ ...passengerObj, seat: newSeat });
   //   } else {
-  //     setFormData({ ...formData, [name]: value });
+  //     setPassengerObj({ ...passengerObj, [name]: value });
   //   }
   // };
 
@@ -97,7 +97,7 @@ const PassengerDetails: React.FC<passengerObj> = ({
       // Construct the data object containing passenger details
       const setPassengerObj = {
         ...passengerObj,
-        // seat: [...passengerObj],
+        seat: [...passengerObj.seat, { passenger_name: "", seat_no: "", mobile_no: "", email: "", age: "" }],
       };
 
       // Make a POST request to the server
