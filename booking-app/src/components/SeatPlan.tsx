@@ -118,7 +118,7 @@ const SeatPlan: React.FC<tripObj> = ({origin, destination, doj, busName, total_s
       }
       </div>
     </section>
-    {passengerVisibility && <PassengerDetails origin={origin} destination={destination} doj={doj} busName={busName} total_seats={total_seats} stoppages={stoppages} start_time={start_time} fare={fare} seatNos={selectedSeatArr}/>}
+    {passengerVisibility && <PassengerDetails origin={origin} destination={destination} doj={doj} busName={busName} stoppages={stoppages} start_time={start_time} fare={fare} seatNos={selectedSeatArr}/>}
     </>
   );
 };

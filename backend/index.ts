@@ -61,18 +61,21 @@ app.post('/getBus', async (req: Request, res: Response)=>{
 
 app.post('/bookSeat', async (req: Request, res: Response)=>{
   try {
-    const { doj, origin, destination, busName, total_seats, stoppages, start_time, fare, seat } = req.body;
+    const { doj, origin, destination, busName, stoppages, start_time, fare, passenger_name, seat_no, mobile_no, email, age } = req.body;
 
     const dailyRecord = new DailyRecord({
       doj,
       origin,
       destination,
       busName,
-      total_seats,
       stoppages,
       start_time,
       fare,
-      seat
+      passenger_name,
+      seat_no,
+      mobile_no,
+      email,
+      age
     });
 
     await dailyRecord.save();
