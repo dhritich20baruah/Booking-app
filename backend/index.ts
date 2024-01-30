@@ -62,32 +62,69 @@ app.post('/getBus', async (req: Request, res: Response)=>{
 app.post('/bookSeat', async (req: Request, res: Response)=>{
   try {
     const { doj, origin, destination, busName, stoppages, start_time, fare, passenger_name, seat_no, mobile_no, email, age } = req.body;
-
-    const dailyRecord = new DailyRecord({
-      doj,
-      origin,
-      destination,
-      busName,
-      stoppages,
-      start_time,
-      fare,
-      passenger_name,
-      seat_no,
-      mobile_no,
-      email,
-      age
-    });
-
-    await dailyRecord.save();
-
+    console.log(req.body)
+    req.body.map(async (passenger: any)=>{
+      const dailyRecord = new DailyRecord({
+        doj: passenger.doj,
+        origin: passenger.origin,
+        destination: passenger.destination,
+        busName: passenger.busName,
+        stoppages: passenger.stoppages,
+        start_time: passenger.start_time,
+        fare: passenger.fare,
+        passenger_name: passenger.passenger_name,
+        seat_no: passenger.seat_no,
+        mobile_no: passenger.mobile_no,
+        email: passenger.email,
+        age: passenger.age
+      });
+      await dailyRecord.save();
+    })
+    
     res.status(201).json({ message: 'Data saved successfully' });
-  } catch (error) {
-   
+  } catch (error) {   
     console.error('Error saving data:', error);
     res.status(500).json({ error: 'Failed to save data' });
   }
-
 })
+
+// app.post('/bookSeat', async (req: Request, res: Response) => {
+//   try {
+//     // Extract the common details for all passengers
+//     const { doj, origin, destination, busName, stoppages, start_time, fare } = req.body;
+
+//      // Iterate over each passenger detail and save it separately
+//     const promises = req.body.passengerDetails.map(async (passenger: any) => {
+//       const { passenger_name, seat_no, mobile_no, email, age } = passenger;
+
+//       const dailyRecord = new DailyRecord({
+//         doj,
+//         origin,
+//         destination,
+//         busName,
+//         stoppages,
+//         start_time,
+//         fare,
+//         passenger_name,
+//         seat_no,
+//         mobile_no,
+//         email,
+//         age
+//       });
+
+//       await dailyRecord.save();
+//     });
+
+//     // Wait for all passenger details to be saved
+//     await Promise.all(promises);
+
+//     res.status(201).json({ message: 'Data saved successfully' });
+//   } catch (error) {
+//     console.error('Error saving data:', error);
+//     res.status(500).json({ error: 'Failed to save data' });
+//   }
+// });
+
 
 
 app.listen(port, () => {

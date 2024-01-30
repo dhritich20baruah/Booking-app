@@ -64,9 +64,16 @@ const PassengerDetails: React.FC<passengerObj> = ({
     setFormData(newFormData)
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     console.log(formData)
+    try{
+      const response = await axios.post("http://localhost:3000/bookseat", formData)
+      console.log(response)
+    }
+    catch(error){
+      console.log(error)
+    }
   }
   
   return (
@@ -100,7 +107,7 @@ const PassengerDetails: React.FC<passengerObj> = ({
                   Name <br />
                   <input
                     type="text"
-                    name={`passenger${index}_name`} 
+                    name="passenger_name"
                     onChange={(e)=>handleInputChange(e, index)}
                     id="Name"
                     className="w-[90%] border-2 border-gray-500 p-2 mx-2 outline-none"
@@ -110,9 +117,9 @@ const PassengerDetails: React.FC<passengerObj> = ({
                   Age <br />
                   <input
                     type="text"
-                    name="Age" 
+                    name="age" 
                     onChange={(e)=>handleInputChange(e, index)}
-                    id="Age"
+                    id="age"
                     className="w-[50%] border-2 border-gray-500 p-2 mx-2 outline-none"
                   />
                 </label>
@@ -141,9 +148,9 @@ const PassengerDetails: React.FC<passengerObj> = ({
                   Phone <br />
                   <input
                     type="phone"
-                    name="Phone"
+                    name="mobile_no"
                     onChange={(e)=>handleInputChange(e, index)}
-                    id="Phone"
+                    id="mobile_no"
                     className="w-[90%] border-2 border-gray-500 p-2 mx-2 outline-none"
                   />
                 </label>
