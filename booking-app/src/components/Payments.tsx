@@ -1,7 +1,42 @@
-import React from "react";
+import React, {useState} from "react";
 import logo from "../Images/redbuslogo2.jpg";
+import axios from "axios";
+import { CardNumberElement, CardCvcElement, CardExpiryElement, useStripe, useElements } from "@stripe/react-stripe-js";
+
 
 const Payments = () => {
+  const [success, setSuccess] = useState(false)
+    const stripe = useStripe()
+    const elements = useElements()
+
+    const handleSubmit = async (e) =>{
+      e.preventDefault()
+      const {error, paymentMethod} = await stripe.createPaymentMethod({
+          type: "card",
+          card: elements.getElement(CardCvcElement, CardExpiryElement, CardNumberElement)
+      })
+
+      if(!error){
+          try {
+              const {id} = paymentMethod
+              const response = await axios.post("http://localhost:4000/payment", {
+                  amount: 10000,
+                  id
+              })
+
+              if(response.data.success){
+                  console.log("Successful Payment")
+                  setSuccess(true)
+              }
+
+          } catch (error) {
+              console.log("Error", error)
+          }
+      }else {
+          console.log(error.message)
+      }
+  }
+
   return (
     <div className="z-20 fixed top-0 left-0 w-[100vw] h-[100vh] bg-white">
       <nav className="homeNav flex justify-between">
@@ -32,7 +67,33 @@ const Payments = () => {
         </ul>
       </div>
       <div className="main flex">
-        <div className="payment-options w-[60%] p-10"></div>
+        <div className="payment-options w-[60%] p-10">
+        {!success ? 
+        <form onSubmit={handleSubmit}>
+            <fieldset className='FormGroup'>
+                <div className="FormRow">
+                    <CardNumberElement options={CARD_OPTIONS} />
+                </div>
+            </fieldset>
+            <fieldset className='FormGroup'>
+                <div className="FormRow">
+                    <CardExpiryElement options={CARD_OPTIONS} />
+                </div>
+            </fieldset>
+            <fieldset className='FormGroup'>
+                <div className="FormRow">
+                    <CardCvcElement options={CARD_OPTIONS} />
+                </div>
+            </fieldset>
+            <button>Pay</button>
+        </form>
+        :
+        <div className="payment-success">
+            <h2>Payment successful</h2>
+            <h3 className='Thank-you'>Thank you for your patronage</h3>
+        </div>
+    }
+        </div>
         <div className="passenger-info w-[40%] m-10">
           <div className="shadow-lg shadow-black">
             <h1 className="text-red-500 font-bold text-xl p-5">Bus name</h1>
