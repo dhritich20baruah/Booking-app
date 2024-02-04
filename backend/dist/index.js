@@ -99,7 +99,8 @@ app.post("/bookSeat", (req, res) => __awaiter(void 0, void 0, void 0, function* 
                     email: passenger.email,
                     age: passenger.age,
                 });
-                yield dailyRecord.save();
+                // await dailyRecord.save();
+                console.log(dailyRecord);
             }
         }));
         res.status(201).json({ message: "Data saved successfully" });

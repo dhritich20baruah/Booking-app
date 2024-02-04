@@ -36,7 +36,6 @@ const SeatPlan: React.FC<tripObj> = ({origin, destination, doj, busName, total_s
       !isSelected
         ? [...prevArr, seatNumber] : [...prevArr]
     );
-    console.log(selectedSeatArr)
   };
 
   const clearSelection = () => {

@@ -48,7 +48,6 @@ const Buses = () => {
     setSeatVisibility((seatVisibility) => !seatVisibility);
   };
 
-  console.log("Buses: ", busList);
 
   return (
     <main id="buses">
@@ -180,9 +179,10 @@ const Buses = () => {
           </ul>
         </div>
         <div id="busList" className="w-max-[80%] m-4">
-          {busList.map((item) => {
+          {busList.map((item, index) => {
             return (
               <div
+              key={index}
                 id="card"
                 className="p-4 grid grid-cols-7 gap-4 w-[100%] border-2 border-gray-600 font-md my-4"
               >

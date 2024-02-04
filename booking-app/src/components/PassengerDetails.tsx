@@ -54,15 +54,20 @@ const PassengerDetails: React.FC<passengerObj> = ({
   };
 
   const [formData, setFormData] = useState<passengerFormData[]>(
-    Array(seatNos.length).fill({
-      doj: doj,
-      origin: origin,
-      destination: destination,
-      busName: busName,
-      stoppages: stoppages,
-      start_time: start_time,
-      fare: fare,
-    })
+    seatNos.map((seatNo: string)=>({
+      doj,
+      origin,
+      destination,
+      busName,
+      stoppages,
+      start_time,
+      fare,
+      passenger_name: '',
+      seat_no: seatNo, 
+      mobile_no: '',
+      email: '',
+      age: '',
+    }))
   );
 
   const handleInputChange = (
@@ -79,7 +84,7 @@ const PassengerDetails: React.FC<passengerObj> = ({
     e.preventDefault();
     console.log(formData);
     try {
-      const response = await axios.post(
+      await axios.post(
         "http://localhost:3000/bookseat",
         formData
       );
@@ -117,7 +122,7 @@ const PassengerDetails: React.FC<passengerObj> = ({
                   <div>
                     Seat No.:{" "}
                     <span className="font-bold">
-                      <input type="text" name="seat_no" value={items} />
+                      <input type="text" name="seat_no" value={formData[index].seat_no} onChange={(e) => handleInputChange(e, index)} />
                     </span>
                   </div>
                   <label htmlFor="Name">
@@ -194,7 +199,7 @@ const PassengerDetails: React.FC<passengerObj> = ({
       </div>
     </div>
     <div>
-    {paymentsDisplay && <Payments/>}
+    {paymentsDisplay && <Payments formData={formData}/>}
     </div>
     </>
   );

@@ -4,9 +4,27 @@ import axios from "axios";
 import { CardNumberElement, CardCvcElement, CardExpiryElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import CountdownTimer from "./CountdownTimer";
 
+type passengerData = {
+  doj: string;
+  origin: string;
+  destination: string;
+  busName: string;
+  stoppages: Array<string>;
+  start_time: string;
+  fare: number;
+  passenger_name: string;
+  seat_no: string;
+  mobile_no: string;
+  email: string;
+  age: string;
+};
 
-const Payments = () => {
- 
+type props = {formData: passengerData[]}
+
+const Payments: React.FC<props> = ({formData}) => { 
+  console.log(formData[0])
+
+  const info = formData[0]
 
   return (
     <div className="z-20 fixed top-0 left-0 w-[100vw] h-[100vh] bg-white">
@@ -29,8 +47,8 @@ const Payments = () => {
       <div className="bg-red-500 p-3">
         <ul className="text-yellow-200 flex justify-evenly">
           <li className="flex">
-            origin <i className="material-icons mx-3">arrow_forward</i>{" "}
-            destination
+            {info.origin} <i className="material-icons mx-3">arrow_forward</i>{" "}
+            {info.destination}
           </li>
           <li className="flex">
             Please pay within <i className="material-icons mx-2">alarm</i> 
@@ -55,7 +73,7 @@ const Payments = () => {
         </div>
         <div className="passenger-info w-[40%] m-10">
           <div className="shadow-lg shadow-black">
-            <h1 className="text-red-500 font-bold text-xl p-5">Bus name</h1>
+            <h1 className="text-red-500 font-bold text-xl p-5">{info.busName}</h1>
             <hr />
             <div className="departure my-4 flex justify-between">
               <div className="flex">
@@ -64,12 +82,20 @@ const Payments = () => {
                 </div>
                 <div>
                   <h2>Departure</h2>
-                  <h3 className="text-lg font-semibold">doj start_time</h3>
+                  <h3 className="text-lg font-semibold">{info.doj} | {info.start_time}</h3>
                 </div>
               </div>
               <div className="px-5 text-right">
                 <h2>Seats</h2>
-                <h3 className="text-lg font-semibold">seatNo</h3>
+                <h3 className="text-lg font-semibold">
+                  {formData.map((item, index)=>{
+                    return(
+                      <ul key={index} className="flex">
+                        <li>{item.seat_no}</li>
+                      </ul>
+                    )
+                  })}
+                </h3>
               </div>
             </div>
             <hr />
@@ -80,28 +106,37 @@ const Payments = () => {
                 </div>
                 <div>
                   <h2>Boarding Point</h2>
-                  <h3 className="text-lg font-semibold">origin</h3>
+                  <h3 className="text-lg font-semibold">{info.origin}</h3>
                 </div>
               </div>
               <div className="px-5 text-right">
                 <h2>Dropping Point</h2>
-                <h3 className="text-lg font-semibold">destination</h3>
+                <h3 className="text-lg font-semibold">{info.destination}</h3>
               </div>
             </div>
             <hr />
             <div className="passenger bg-red-500">
-             <p className="flex font-semibold text-md py-5 px-4 text-yellow-300"><i className="material-icons mx-4">account_circle</i>Passenger Name</p> 
+             <p className="flex font-semibold text-md py-5 px-4 text-yellow-300">
+              <i className="material-icons mx-4">account_circle</i>
+              {formData.map((item, index)=>{
+                    return(
+                      <ul key={index} className="flex">
+                        <li className="mx-3">{item.passenger_name}</li>
+                      </ul>
+                    )
+                  })}
+              </p> 
             </div>
           </div>
           <div className="shadow-lg shadow-black my-5 p-4 space-y-4">
             <h1 className="text-red-500 text-xl font-bold px-4">FARE BREAKUP</h1>
             <ul className="flex justify-between px-4 text-xl">
                 <li>Onward Fare</li>
-                <li>INR 1021</li>
+                <li>INR {info.fare * formData.length}</li>
             </ul>
             <ul className="flex justify-between px-4 text-xl font-bold">
                 <li>Total Payable</li>
-                <li>INR 1021</li>
+                <li>INR {info.fare * formData.length}</li>
             </ul>
           </div>
         </div>
