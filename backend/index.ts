@@ -122,42 +122,39 @@ app.post("/bookSeat", async (req: Request, res: Response) => {
   }
 });
 
-// app.post('/bookSeat', async (req: Request, res: Response) => {
+// const stripe = require("stripe")(process.env.STRIPE_PRIVATE_KEY)
+
+// const storeItems = new Map([
+//   [1, { priceInCents: 10000, name: "Learn React Today" }],
+//   [2, { priceInCents: 20000, name: "Learn CSS Today" }],
+// ])
+
+// app.post("/create-checkout-session", async (req, res) => {
 //   try {
-//     // Extract the common details for all passengers
-//     const { doj, origin, destination, busName, stoppages, start_time, fare } = req.body;
-
-//      // Iterate over each passenger detail and save it separately
-//     const promises = req.body.passengerDetails.map(async (passenger: any) => {
-//       const { passenger_name, seat_no, mobile_no, email, age } = passenger;
-
-//       const dailyRecord = new DailyRecord({
-//         doj,
-//         origin,
-//         destination,
-//         busName,
-//         stoppages,
-//         start_time,
-//         fare,
-//         passenger_name,
-//         seat_no,
-//         mobile_no,
-//         email,
-//         age
-//       });
-
-//       await dailyRecord.save();
-//     });
-
-//     // Wait for all passenger details to be saved
-//     await Promise.all(promises);
-
-//     res.status(201).json({ message: 'Data saved successfully' });
-//   } catch (error) {
-//     console.error('Error saving data:', error);
-//     res.status(500).json({ error: 'Failed to save data' });
+//     const session = await stripe.checkout.sessions.create({
+//       payment_method_types: ["card"],
+//       mode: "payment",
+//       line_items: req.body.items.map(item => {
+//         const storeItem = storeItems.get(item.id)
+//         return {
+//           price_data: {
+//             currency: "usd",
+//             product_data: {
+//               name: storeItem.name,
+//             },
+//             unit_amount: storeItem.priceInCents,
+//           },
+//           quantity: item.quantity,
+//         }
+//       }),
+//       success_url: `${process.env.CLIENT_URL}/success.html`,
+//       cancel_url: `${process.env.CLIENT_URL}/cancel.html`,
+//     })
+//     res.json({ url: session.url })
+//   } catch (e) {
+//     res.status(500).json({ error: e.message })
 //   }
-// });
+// })
 
 app.listen(port, () => {
   console.log(`[server]: Sever is running at localhost:${port}`);
