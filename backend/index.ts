@@ -9,6 +9,11 @@ import { calculateTotalFare } from "./data/busData";
 import DailyRecord from "./models/DailyRecord";
 // import busData from "./data/busData";
 dotenv.config();
+import Stripe from 'stripe'
+
+const stripe = new Stripe('your_secret_key', {
+  apiVersion: '2023-10-16'
+})
 
 const app: Express = express();
 const port = process.env.PORT;
@@ -122,6 +127,36 @@ app.post("/bookSeat", async (req: Request, res: Response) => {
     res.status(500).json({ error: "Failed to save data" });
   }
 });
+
+app.post('/create-payment-intent', async (req: Request, res: Response) => {
+  try {
+    const {amount, currency} = req.body;
+
+    const paymentintent = await stripe.paymentIntents.create({
+      amount, currency
+    })
+
+    res.status(200).json({ clientSecret: paymentintent.client_secret})
+  }
+  catch(error){
+    console.error('Error creating Payment Intent:', error);
+    res.status(500).json({ error: 'Failed to create Payment Intent' });
+  }
+})
+
+app.post('/confirm-payment', async (req: Request, res: Response) => {
+  try{
+    const { paymentIntentId } = req.body
+
+    const paymentIntent = await stripe.paymentIntents.confirm(paymentIntentId)
+
+    res.status(200).json({ message: 'Payment confirmed successfully' })
+  }
+  catch (error) {
+    console.error('Error confirming payment:', error);
+    res.status(500).json({ error: 'Failed to confirm payment' });
+  }
+})
 
 // const stripe = require("stripe")(process.env.STRIPE_PRIVATE_KEY)
 

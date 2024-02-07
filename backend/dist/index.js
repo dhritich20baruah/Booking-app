@@ -23,6 +23,10 @@ const busData_2 = require("./data/busData");
 const DailyRecord_1 = __importDefault(require("./models/DailyRecord"));
 // import busData from "./data/busData";
 dotenv_1.default.config();
+const stripe_1 = __importDefault(require("stripe"));
+const stripe = new stripe_1.default('your_secret_key', {
+    apiVersion: '2023-10-16'
+});
 const app = (0, express_1.default)();
 const port = process.env.PORT;
 app.use((0, cors_1.default)());
@@ -108,6 +112,30 @@ app.post("/bookSeat", (req, res) => __awaiter(void 0, void 0, void 0, function* 
     catch (error) {
         console.error("Error saving data:", error);
         res.status(500).json({ error: "Failed to save data" });
+    }
+}));
+app.post('/create-payment-intent', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { amount, currency } = req.body;
+        const paymentintent = yield stripe.paymentIntents.create({
+            amount, currency
+        });
+        res.status(200).json({ clientSecret: paymentintent.client_secret });
+    }
+    catch (error) {
+        console.error('Error creating Payment Intent:', error);
+        res.status(500).json({ error: 'Failed to create Payment Intent' });
+    }
+}));
+app.post('/confirm-payment', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { paymentIntentId } = req.body;
+        const paymentIntent = yield stripe.paymentIntents.confirm(paymentIntentId);
+        res.status(200).json({ message: 'Payment confirmed successfully' });
+    }
+    catch (error) {
+        console.error('Error confirming payment:', error);
+        res.status(500).json({ error: 'Failed to confirm payment' });
     }
 }));
 // const stripe = require("stripe")(process.env.STRIPE_PRIVATE_KEY)
