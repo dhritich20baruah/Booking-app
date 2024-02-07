@@ -111,7 +111,7 @@ app.post("/bookSeat", async (req: Request, res: Response) => {
           email: passenger.email,
           age: passenger.age,
         });
-        // await dailyRecord.save();
+        await dailyRecord.save();
         console.log(dailyRecord)
       }
     });

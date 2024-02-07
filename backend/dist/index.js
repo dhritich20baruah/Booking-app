@@ -99,7 +99,7 @@ app.post("/bookSeat", (req, res) => __awaiter(void 0, void 0, void 0, function* 
                     email: passenger.email,
                     age: passenger.age,
                 });
-                // await dailyRecord.save();
+                yield dailyRecord.save();
                 console.log(dailyRecord);
             }
         }));

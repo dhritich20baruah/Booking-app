@@ -1,34 +1,43 @@
-// import { useState } from 'react';
-// import { loadStripe, StripeError } from '@stripe/stripe-js';
+import React from "react";
+import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
+import { StripeCardElement } from "@stripe/stripe-js";
 
-// const stripePromise = loadStripe('your_stripe_publishable_key');
+const CheckoutForm: React.FC  = () => {
+    const stripe = useStripe()
+    const elements = useElements()
 
-// const CheckoutForm: React.FC = () => {
-//   const [error, setError] = useState<string | null>(null);
+    const handleSubmit = async (event: React.FormEvent) => {
+        event.preventDefault();
 
-//   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-//     event.preventDefault();
+        if(!stripe || !elements){
+            return;
+        }
 
-//     const stripe = await stripePromise;
+        const cardElement = elements.getElement(CardElement) as StripeCardElement
 
-//     const { error } = await stripe.redirectToCheckout({
-//       lineItems: [{ price: 'price_12345', quantity: 1 }],
-//       mode: 'payment',
-//       successUrl: 'https://yourwebsite.com/success',
-//       cancelUrl: 'https://yourwebsite.com/cancel',
-//     });
+        if(!cardElement){
+            return
+        }
+        const {error, paymentMethod} = await stripe.createPaymentMethod({
+            type: 'card',
+            card: cardElement
+        })
 
-//     if (error) {
-//       setError((error as StripeError).message);
-//     }
-//   };
+        if(error){
+            console.error('Error', error)
+        } else {
+            console.log('PaymentMethod', paymentMethod)
+        }
 
-//   return (
-//     <form onSubmit={handleSubmit}>
-//       <button type="submit">Pay</button>
-//       {error && <div>{error}</div>}
-//     </form>
-//   );
-// };
+    }
 
-// export default CheckoutForm;
+    return(
+        <form onSubmit={handleSubmit}>
+        <CardElement />
+        <button type="submit" disabled={!stripe} className="px-2 py-1 bg-red-700 text-white font-semibold hover:cursor-pointer hover:bg-orange-700 m-5">
+          Pay
+        </button>
+      </form>
+    )
+}
+export default CheckoutForm;
