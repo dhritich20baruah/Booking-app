@@ -1,6 +1,5 @@
-import React, { useState } from "react";
+import React from "react";
 import logo from "../Images/redbuslogo2.jpg";
-import axios from "axios";
 import CountdownTimer from "./CountdownTimer";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
@@ -23,7 +22,8 @@ type passengerData = {
 
 type props = { formData: passengerData[] };
 
-const stripePromise = loadStripe("key");
+const PUBLIC_KEY = "pk_test_51Oh5akSGJj1UMFGk8ivs6pI4dIOO5nCcBGsqyoVt36KY6L75H64NyJesIjf1qjdK29SPBwkypZK45Yc5PS8R8wJ7005GghDSIS"
+const stripePromise = loadStripe(PUBLIC_KEY);
 
 const Payments: React.FC<props> = ({ formData }) => {
   console.log(formData[0]);

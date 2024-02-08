@@ -9,11 +9,8 @@ import { calculateTotalFare } from "./data/busData";
 import DailyRecord from "./models/DailyRecord";
 // import busData from "./data/busData";
 dotenv.config();
-import Stripe from 'stripe'
 
-const stripe = new Stripe('your_secret_key', {
-  apiVersion: '2023-10-16'
-})
+const stripe = require("stripe")(process.env.STRIPE_SECRET)
 
 const app: Express = express();
 const port = process.env.PORT;
@@ -129,14 +126,22 @@ app.post("/bookSeat", async (req: Request, res: Response) => {
 });
 
 app.post('/create-payment-intent', async (req: Request, res: Response) => {
+  const {amount, id} = req.body;
   try {
-    const {amount, currency} = req.body;
-
-    const paymentintent = await stripe.paymentIntents.create({
-      amount, currency
+    const payment = await stripe.paymentIntents.create({
+      amount,
+      currency: 'inr',
+      description: "Book Seat",
+      payment_method: id,
+      confirm: true
     })
-
-    res.status(200).json({ clientSecret: paymentintent.client_secret})
+    console.log("Payment", payment)
+    res.json({
+      message: "Payment Successful",
+      success: true
+    })
+    success_url: "http://localhost:5173"
+    cancel_url: "http://localhost:5173"
   }
   catch(error){
     console.error('Error creating Payment Intent:', error);

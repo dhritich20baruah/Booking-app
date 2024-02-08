@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import { StripeCardElement } from "@stripe/stripe-js";
+import axios from "axios";
 
 const CheckoutForm: React.FC  = () => {
+    const [success, setSuccess] = useState(false) 
     const stripe = useStripe()
     const elements = useElements()
 
@@ -23,8 +25,20 @@ const CheckoutForm: React.FC  = () => {
             card: cardElement
         })
 
-        if(error){
-            console.error('Error', error)
+        if(!error){
+            try {
+                const {id} = paymentMethod
+                const response = await axios.post("http://localhost:3000/create-payment-intent", {
+                    amount: 100, 
+                    id
+                })
+                if(response.data.success){
+                    console.log("Successful payment")
+                    setSuccess(true)
+                }
+            } catch (error) {
+                console.log(error)
+            }
         } else {
             console.log('PaymentMethod', paymentMethod)
         }
@@ -32,12 +46,20 @@ const CheckoutForm: React.FC  = () => {
     }
 
     return(
+        <>
+        {!success ? 
         <form onSubmit={handleSubmit}>
         <CardElement />
         <button type="submit" disabled={!stripe} className="px-2 py-1 bg-red-700 text-white font-semibold hover:cursor-pointer hover:bg-orange-700 m-5">
           Pay
         </button>
       </form>
+        :
+        <div>
+            <p>TICKET BOOKED</p>
+        </div>
+        }
+      </>
     )
 }
 export default CheckoutForm;
