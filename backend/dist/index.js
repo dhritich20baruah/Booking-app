@@ -119,15 +119,14 @@ app.post('/create-payment-intent', (req, res) => __awaiter(void 0, void 0, void 
             currency: 'inr',
             description: "Book Seat",
             payment_method: id,
-            confirm: true
+            confirm: true,
+            return_url: "https://yourwebsite.com/success"
         });
         console.log("Payment", payment);
         res.json({
             message: "Payment Successful",
             success: true
         });
-        success_url: "http://localhost:5173";
-        cancel_url: "http://localhost:5173";
     }
     catch (error) {
         console.error('Error creating Payment Intent:', error);
