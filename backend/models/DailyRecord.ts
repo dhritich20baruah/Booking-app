@@ -12,7 +12,9 @@ type DailyRecordType =  Document & {
     seat_no: string;
     mobile_no: string;
     email: string;
-    age: string     
+    age: string;
+    paymentID: string;
+    payment_success: boolean
 }
 
 const DailyRecordSchema: Schema<DailyRecordType> = new Schema({
@@ -27,7 +29,9 @@ const DailyRecordSchema: Schema<DailyRecordType> = new Schema({
     seat_no: String,
     mobile_no: String,
     email: String,
-    age: String
+    age: String,
+    paymentID: String,
+    payment_success: Boolean
 })
 
 const DailyRecord: Model<DailyRecordType> = mongoose.model<DailyRecordType>('DailyRecord', DailyRecordSchema);

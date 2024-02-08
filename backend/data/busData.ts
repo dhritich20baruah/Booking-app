@@ -6,7 +6,7 @@ interface Stoppage {
   }
   
   interface Bus {
-    name: string;
+    busName: string;
     details: string;
     total_seats: number;
     stoppages: Array<string>;
@@ -53,7 +53,7 @@ interface Stoppage {
   
 export const busData: Bus[] = [
     {
-      name: "Network Travels",
+      busName: "Network Travels",
       details: "Non A/C Seater Pushback 2+1",
       total_seats: 35,
       stoppages: [
@@ -65,7 +65,7 @@ export const busData: Bus[] = [
       service: "night",
     },
     {
-      name: "Chartered ASTC",
+      busName: "Chartered ASTC",
       details: "Volvo A/C Pushback 2+2",
       total_seats: 48,
       stoppages: [
@@ -77,7 +77,7 @@ export const busData: Bus[] = [
       service: "day",
     },
     {
-      name: "Rayan",
+      busName: "Rayan",
       details: "Bharat Benz A/C 2+1 Seater",
       total_seats: 35,
       stoppages: [

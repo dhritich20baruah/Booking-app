@@ -38,7 +38,7 @@ exports.stops = [
 ];
 exports.busData = [
     {
-        name: "Network Travels",
+        busName: "Network Travels",
         details: "Non A/C Seater Pushback 2+1",
         total_seats: 35,
         stoppages: [
@@ -50,7 +50,7 @@ exports.busData = [
         service: "night",
     },
     {
-        name: "Chartered ASTC",
+        busName: "Chartered ASTC",
         details: "Volvo A/C Pushback 2+2",
         total_seats: 48,
         stoppages: [
@@ -62,7 +62,7 @@ exports.busData = [
         service: "day",
     },
     {
-        name: "Rayan",
+        busName: "Rayan",
         details: "Bharat Benz A/C 2+1 Seater",
         total_seats: 35,
         stoppages: [

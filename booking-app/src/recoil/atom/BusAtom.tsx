@@ -1,7 +1,7 @@
 import { atom } from "recoil";
 
 type Bus = {
-  name: string;
+  busName: string;
   details: string;
   total_seats: number;
   stoppages: Array<string>;

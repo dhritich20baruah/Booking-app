@@ -36,7 +36,9 @@ const DailyRecordSchema = new mongoose_1.Schema({
     seat_no: String,
     mobile_no: String,
     email: String,
-    age: String
+    age: String,
+    paymentID: String,
+    payment_success: Boolean
 });
 const DailyRecord = mongoose_1.default.model('DailyRecord', DailyRecordSchema);
 exports.default = DailyRecord;

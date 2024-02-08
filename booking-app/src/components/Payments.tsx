@@ -20,16 +20,14 @@ type passengerData = {
   age: string;
 };
 
-type props = { formData: passengerData[] };
+type props = { formData: passengerData[], recordID: Array<string> };
 
 const PUBLIC_KEY = "pk_test_51Oh5akSGJj1UMFGk8ivs6pI4dIOO5nCcBGsqyoVt36KY6L75H64NyJesIjf1qjdK29SPBwkypZK45Yc5PS8R8wJ7005GghDSIS"
 const stripePromise = loadStripe(PUBLIC_KEY);
 
-const Payments: React.FC<props> = ({ formData }) => {
-  console.log(formData[0]);
-
+const Payments: React.FC<props> = ({ formData, recordID }) => {
   const info = formData[0];
-
+  console.log(recordID)
   return (
     <>
       <div className="z-20 fixed top-0 left-0 w-[100vw] h-[100vh] bg-white">
@@ -139,7 +137,7 @@ const Payments: React.FC<props> = ({ formData }) => {
               </div>
               <hr />
               <div className="passenger bg-red-500">
-                <p className="flex font-semibold text-md py-5 px-4 text-yellow-300">
+                <div className="flex font-semibold text-md py-5 px-4 text-yellow-300">
                   <i className="material-icons mx-4">account_circle</i>
                   {formData.map((item, index) => {
                     return (
@@ -148,7 +146,7 @@ const Payments: React.FC<props> = ({ formData }) => {
                       </ul>
                     );
                   })}
-                </p>
+                </div>
               </div>
             </div>
             <div className="shadow-lg shadow-black my-5 p-4 space-y-4">

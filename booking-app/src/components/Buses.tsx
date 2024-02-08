@@ -9,7 +9,7 @@ import { destinationState } from "../recoil/atom/JourneyAtom";
 import { useState } from "react";
 
 type busArr = {
-  name: string;
+  busName: string;
   details: string;
   total_seats: number;
   stoppages: Array<string>;
@@ -187,7 +187,7 @@ const Buses = () => {
                 className="p-4 grid grid-cols-7 gap-4 w-[100%] border-2 border-gray-600 font-md my-4"
               >
                 <div>
-                  <p className="font-bold text-lg">{item.name}</p>
+                  <p className="font-bold text-lg">{item.busName}</p>
                   <br />
                   <p>{item.details}</p>
                 </div>
@@ -229,7 +229,7 @@ const Buses = () => {
                   {seatVisibility && (
                     <div>
                       <SeatPlan
-                        busName={item.name}
+                        busName={item.busName}
                         origin={item.origin}
                         destination={item.destination}
                         doj={item.doj}

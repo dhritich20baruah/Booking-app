@@ -2,6 +2,7 @@ import express, { Express, Request, Response } from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
+import { Types } from "mongoose";
 import Bus from "./models/Bus";
 // import searchBus from "./data/busData";
 import { searchBus } from "./data/busData";
@@ -85,7 +86,9 @@ app.post("/getBus", async (req: Request, res: Response) => {
 app.post("/bookSeat", async (req: Request, res: Response) => {
   try {
     console.log(req.body);
-    req.body.map(async (passenger: any) => {
+    const savedRecordIds: Types.ObjectId[] = [];
+
+    await Promise.all(req.body.map(async (passenger: any) => {
       // Ensure that passenger details are provided
       if (
         passenger.passenger_name == "" ||
@@ -113,17 +116,19 @@ app.post("/bookSeat", async (req: Request, res: Response) => {
           email: passenger.email,
           age: passenger.age,
         });
-        await dailyRecord.save();
-        console.log(dailyRecord)
+        const savedRecord = await dailyRecord.save();
+        console.log(savedRecord);
+        savedRecordIds.push(savedRecord._id); // Assuming _id is the ObjectId field
       }
-    });
+    }));
 
-    res.status(201).json({ message: "Data saved successfully" });
+    res.status(201).json({ message: "Data saved successfully", savedRecordIds });
   } catch (error) {
     console.error("Error saving data:", error);
     res.status(500).json({ error: "Failed to save data" });
   }
 });
+
 
 app.post('/create-payment-intent', async (req: Request, res: Response) => {
   const {amount, id} = req.body;
@@ -136,66 +141,16 @@ app.post('/create-payment-intent', async (req: Request, res: Response) => {
       confirm: true,
       return_url: "https://yourwebsite.com/success"
     })
-    console.log("Payment", payment)
     res.json({
       message: "Payment Successful",
       success: true
-    })
-    
+    })  
   }
   catch(error){
     console.error('Error creating Payment Intent:', error);
     res.status(500).json({ error: 'Failed to create Payment Intent' });
   }
 })
-
-app.post('/confirm-payment', async (req: Request, res: Response) => {
-  try{
-    const { paymentIntentId } = req.body
-
-    const paymentIntent = await stripe.paymentIntents.confirm(paymentIntentId)
-
-    res.status(200).json({ message: 'Payment confirmed successfully' })
-  }
-  catch (error) {
-    console.error('Error confirming payment:', error);
-    res.status(500).json({ error: 'Failed to confirm payment' });
-  }
-})
-
-// const stripe = require("stripe")(process.env.STRIPE_PRIVATE_KEY)
-
-// const storeItems = new Map([
-//   [1, { priceInCents: 10000, name: "Learn React Today" }],
-//   [2, { priceInCents: 20000, name: "Learn CSS Today" }],
-// ])
-
-// app.post("/create-checkout-session", async (req, res) => {
-//   try {
-//     const session = await stripe.checkout.sessions.create({
-//       payment_method_types: ["card"],
-//       mode: "payment",
-//       line_items: req.body.items.map(item => {
-//         const storeItem = storeItems.get(item.id)
-//         return {
-//           price_data: {
-//             currency: "usd",
-//             product_data: {
-//               name: storeItem.name,
-//             },
-//             unit_amount: storeItem.priceInCents,
-//           },
-//           quantity: item.quantity,
-//         }
-//       }),
-//       success_url: `${process.env.CLIENT_URL}/success.html`,
-//       cancel_url: `${process.env.CLIENT_URL}/cancel.html`,
-//     })
-//     res.json({ url: session.url })
-//   } catch (e) {
-//     res.status(500).json({ error: e.message })
-//   }
-// })
 
 app.listen(port, () => {
   console.log(`[server]: Sever is running at localhost:${port}`);

@@ -2,6 +2,7 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import { passengerVisibilitySelector } from "../recoil/selectors/VisibilitySelectors";
 import { useState } from "react";
 import PassengerDetails from "./PassengerDetails";
+
 type tripObj = {
   origin: string,
   destination: string,

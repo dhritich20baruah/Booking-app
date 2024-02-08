@@ -73,7 +73,8 @@ app.post("/getBus", (req, res) => __awaiter(void 0, void 0, void 0, function* ()
 app.post("/bookSeat", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         console.log(req.body);
-        req.body.map((passenger) => __awaiter(void 0, void 0, void 0, function* () {
+        const savedRecordIds = [];
+        yield Promise.all(req.body.map((passenger) => __awaiter(void 0, void 0, void 0, function* () {
             // Ensure that passenger details are provided
             if (passenger.passenger_name == "" ||
                 passenger.mobile_no == "" ||
@@ -100,11 +101,12 @@ app.post("/bookSeat", (req, res) => __awaiter(void 0, void 0, void 0, function* 
                     email: passenger.email,
                     age: passenger.age,
                 });
-                yield dailyRecord.save();
-                console.log(dailyRecord);
+                const savedRecord = yield dailyRecord.save();
+                console.log(savedRecord);
+                savedRecordIds.push(savedRecord._id); // Assuming _id is the ObjectId field
             }
-        }));
-        res.status(201).json({ message: "Data saved successfully" });
+        })));
+        res.status(201).json({ message: "Data saved successfully", savedRecordIds });
     }
     catch (error) {
         console.error("Error saving data:", error);
@@ -122,7 +124,6 @@ app.post('/create-payment-intent', (req, res) => __awaiter(void 0, void 0, void 
             confirm: true,
             return_url: "https://yourwebsite.com/success"
         });
-        console.log("Payment", payment);
         res.json({
             message: "Payment Successful",
             success: true
@@ -133,48 +134,6 @@ app.post('/create-payment-intent', (req, res) => __awaiter(void 0, void 0, void 
         res.status(500).json({ error: 'Failed to create Payment Intent' });
     }
 }));
-app.post('/confirm-payment', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const { paymentIntentId } = req.body;
-        const paymentIntent = yield stripe.paymentIntents.confirm(paymentIntentId);
-        res.status(200).json({ message: 'Payment confirmed successfully' });
-    }
-    catch (error) {
-        console.error('Error confirming payment:', error);
-        res.status(500).json({ error: 'Failed to confirm payment' });
-    }
-}));
-// const stripe = require("stripe")(process.env.STRIPE_PRIVATE_KEY)
-// const storeItems = new Map([
-//   [1, { priceInCents: 10000, name: "Learn React Today" }],
-//   [2, { priceInCents: 20000, name: "Learn CSS Today" }],
-// ])
-// app.post("/create-checkout-session", async (req, res) => {
-//   try {
-//     const session = await stripe.checkout.sessions.create({
-//       payment_method_types: ["card"],
-//       mode: "payment",
-//       line_items: req.body.items.map(item => {
-//         const storeItem = storeItems.get(item.id)
-//         return {
-//           price_data: {
-//             currency: "usd",
-//             product_data: {
-//               name: storeItem.name,
-//             },
-//             unit_amount: storeItem.priceInCents,
-//           },
-//           quantity: item.quantity,
-//         }
-//       }),
-//       success_url: `${process.env.CLIENT_URL}/success.html`,
-//       cancel_url: `${process.env.CLIENT_URL}/cancel.html`,
-//     })
-//     res.json({ url: session.url })
-//   } catch (e) {
-//     res.status(500).json({ error: e.message })
-//   }
-// })
 app.listen(port, () => {
     console.log(`[server]: Sever is running at localhost:${port}`);
 });

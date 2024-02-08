@@ -30,6 +30,7 @@ type passengerFormData = {
   age: string;
 };
 
+
 const PassengerDetails: React.FC<passengerObj> = ({
   origin,
   destination,
@@ -44,6 +45,7 @@ const PassengerDetails: React.FC<passengerObj> = ({
     passengerVisibilitySelector
   );
   const [paymentsDisplay, setPaymentsDisplay] = useState(false);
+  const [recordID, setRecordID] = useState<string[]>([])
 
   const handlePassengerVisible = () => {
     setPassengerVisibility((prevValue) => !prevValue);
@@ -82,13 +84,14 @@ const PassengerDetails: React.FC<passengerObj> = ({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log(formData);
     try {
-      await axios.post(
+      const response = await axios.post(
         "http://localhost:3000/bookseat",
         formData
       );
       handlePaymentsDisplay()
+      console.log(response.data)
+      setRecordID(response.data)
     } catch (error) {
       console.log(error);
     }
@@ -114,7 +117,7 @@ const PassengerDetails: React.FC<passengerObj> = ({
         <form onSubmit={handleSubmit}>
           {seatNos.map((items: string, index: number) => {
             return (
-              <div className="py-2">
+              <div className="py-2" key={index}>
                 <div className="space-y-2">
                   <p className="mb-2">
                     Passenger <span className="font-bold">{index + 1}</span>
@@ -199,7 +202,7 @@ const PassengerDetails: React.FC<passengerObj> = ({
       </div>
     </div>
     <div>
-    {paymentsDisplay && <Payments formData={formData}/>}
+    {paymentsDisplay && <Payments formData={formData} recordID={recordID}/>}
     </div>
     </>
   );
