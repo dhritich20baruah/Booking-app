@@ -117,7 +117,6 @@ app.post("/bookSeat", async (req: Request, res: Response) => {
           age: passenger.age,
         });
         const savedRecord = await dailyRecord.save();
-        console.log(savedRecord);
         savedRecordIds.push(savedRecord._id); // Assuming _id is the ObjectId field
       }
     }));
@@ -131,7 +130,7 @@ app.post("/bookSeat", async (req: Request, res: Response) => {
 
 
 app.post('/create-payment-intent', async (req: Request, res: Response) => {
-  const {amount, id} = req.body;
+  const {amount, id, recordID} = req.body;
   try {
     const payment = await stripe.paymentIntents.create({
       amount,
@@ -141,6 +140,16 @@ app.post('/create-payment-intent', async (req: Request, res: Response) => {
       confirm: true,
       return_url: "https://yourwebsite.com/success"
     })
+    await Promise.all(recordID.map(async (ids: string)=>{
+        let records = await DailyRecord.findByIdAndUpdate(ids,{
+          $set:{
+            paymentID: payment.id,
+            payment_success: true
+          },
+        },
+        {new: true}
+        )
+    }))
     res.json({
       message: "Payment Successful",
       success: true

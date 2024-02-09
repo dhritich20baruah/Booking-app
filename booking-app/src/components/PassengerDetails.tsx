@@ -90,8 +90,8 @@ const PassengerDetails: React.FC<passengerObj> = ({
         formData
       );
       handlePaymentsDisplay()
-      console.log(response.data)
-      setRecordID(response.data)
+      console.log(response.data.savedRecordIds)
+      setRecordID(response.data.savedRecordIds)
     } catch (error) {
       console.log(error);
     }
@@ -109,6 +109,7 @@ const PassengerDetails: React.FC<passengerObj> = ({
       >
         highlight_off
       </i>
+      <h2 className="text-xl font-bold">{busName}</h2>
       <h2 className="text-xl font-bold">Passenger Details</h2>
       <div className="passenger-info space-y-2">
         <h4 className="text-md font-semibold flex items-center">

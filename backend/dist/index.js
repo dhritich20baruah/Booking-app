@@ -102,7 +102,6 @@ app.post("/bookSeat", (req, res) => __awaiter(void 0, void 0, void 0, function* 
                     age: passenger.age,
                 });
                 const savedRecord = yield dailyRecord.save();
-                console.log(savedRecord);
                 savedRecordIds.push(savedRecord._id); // Assuming _id is the ObjectId field
             }
         })));
@@ -114,7 +113,7 @@ app.post("/bookSeat", (req, res) => __awaiter(void 0, void 0, void 0, function* 
     }
 }));
 app.post('/create-payment-intent', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { amount, id } = req.body;
+    const { amount, id, recordID } = req.body;
     try {
         const payment = yield stripe.paymentIntents.create({
             amount,
@@ -124,6 +123,14 @@ app.post('/create-payment-intent', (req, res) => __awaiter(void 0, void 0, void 
             confirm: true,
             return_url: "https://yourwebsite.com/success"
         });
+        yield Promise.all(recordID.map((ids) => __awaiter(void 0, void 0, void 0, function* () {
+            let records = yield DailyRecord_1.default.findByIdAndUpdate(ids, {
+                $set: {
+                    paymentID: payment.id,
+                    payment_success: true
+                },
+            }, { new: true });
+        })));
         res.json({
             message: "Payment Successful",
             success: true

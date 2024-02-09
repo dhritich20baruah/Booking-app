@@ -1,9 +1,7 @@
 import redLogo from "../Images/redbuslogo.jpg";
 import SeatPlan from "./SeatPlan";
 import { Link } from "react-router-dom";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { VisibilityAtom } from "../recoil/atom/Visible";
-import { BusAtom } from "../recoil/atom/BusAtom";
+import { useRecoilValue } from "recoil";
 import { originState } from "../recoil/atom/JourneyAtom";
 import { destinationState } from "../recoil/atom/JourneyAtom";
 import { useState } from "react";
@@ -28,20 +26,22 @@ type busArr = {
   doj: string;
 };
 
-const Buses = () => {
-  const [, setVisibility] = useRecoilState(VisibilityAtom);
-  const [busList] = useRecoilState<busArr[]>(BusAtom);
+type props = { busList: busArr[] }
+
+const Buses: React.FC<props> = ({busList}) => {
   const origin = useRecoilValue(originState);
   const destination = useRecoilValue(destinationState);
   const [seatVisibility, setSeatVisibility] = useState(false);
   const [busFare, setbusFare] = useState(0);
+  const [bus, setBus] = useState("")
 
-  const handleVisible = () => {
-    setVisibility((visibility) => !visibility);
+  const handleModify = () => {
+    window.location.reload()
   };
 
-  const handleFare = (fare:number)=>{
+  const handleFare = (fare:number, busName:string)=>{
     setbusFare(fare);
+    setBus(busName)
     handleSeatVisible()
   }
   const handleSeatVisible = () => {
@@ -86,7 +86,7 @@ const Buses = () => {
         <i className="material-icons">chevron_right</i>
         <button
           className="mx-1 p-1 text-white bg-red-500 rounded-md hover:cursor-pointer"
-          onClick={handleVisible}
+          onClick={handleModify}
         >
           Modify
         </button>
@@ -219,7 +219,7 @@ const Buses = () => {
                   <br />
                   <br />
                   <button
-                    onClick={() => handleFare(item.fare)}
+                    onClick={() => handleFare(item.fare, item.busName)}
                     className="bg-red-600 p-4 text-white hover:cursor-pointer hover:bg-red-700"
                   >
                     VIEW SEATS
@@ -229,7 +229,7 @@ const Buses = () => {
                   {seatVisibility && (
                     <div>
                       <SeatPlan
-                        busName={item.busName}
+                        busName={bus}
                         origin={item.origin}
                         destination={item.destination}
                         doj={item.doj}

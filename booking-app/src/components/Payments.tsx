@@ -27,7 +27,7 @@ const stripePromise = loadStripe(PUBLIC_KEY);
 
 const Payments: React.FC<props> = ({ formData, recordID }) => {
   const info = formData[0];
-  console.log(recordID)
+  const totalFare = info.fare * formData.length
   return (
     <>
       <div className="z-20 fixed top-0 left-0 w-[100vw] h-[100vh] bg-white">
@@ -84,7 +84,7 @@ const Payments: React.FC<props> = ({ formData, recordID }) => {
             </div>
             <div className="my-10">
               <Elements stripe={stripePromise}>
-                <CheckoutForm />
+                <CheckoutForm recordID={recordID} totalFare={totalFare} formData={formData}/>
               </Elements>
             </div>
           </div>

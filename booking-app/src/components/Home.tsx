@@ -8,8 +8,6 @@ import blackLogo from "../Images/redbusblack.png";
 import ride from "../Images/ride.jpg";
 import train from "../Images/train.jpg";
 import axios from "axios";
-import { VisibilityAtom } from "../recoil/atom/Visible";
-import { BusAtom } from "../recoil/atom/BusAtom";
 import Buses from "./Buses";
 
 const Home = () => {
@@ -25,6 +23,26 @@ const Home = () => {
     "Saikhowa",
   ];
 
+  type BusDetails = {
+    busName: string;
+    details: string;
+    total_seats: number;
+    stoppages: Array<string>;
+    fare: number;
+    start_time: string;
+    speed?: number;
+    service: "day" | "night";
+    travelTime: {
+      startDate: string;
+      startTime: string;
+      endDate: string;
+      endTime: string
+    };
+    origin: string;
+    destination: string;
+    doj: string
+  };
+
   const [places, setPlaces] = useState<string>("");
   const [filteredOrigins, setFilteredOrigins] = useState<string[]>([]);
   const [origin, setOrigin] = useRecoilState<string>(originState);
@@ -32,15 +50,15 @@ const Home = () => {
   const [stops, setStops] = useState<string>("");
   const [filteredDestinations, setFilteredDestination] = useState<string[]>([]);
   const [destination, setDestination] = useRecoilState<string>(destinationState);
-  const [, setBusList] = useRecoilState(BusAtom);
+  const [busList, setBusList] = useState<BusDetails[]>([]);
 
   const [doj, setDoj] = useRecoilState<string>(dojState);
 
-  const [visibility, setVisibility] = useRecoilState(VisibilityAtom);
+  const [busDisplay, setBusDisplay] = useState(true);
 
   
   const handleVisible = () => {
-    setVisibility(visibility => !visibility);
+    setBusDisplay(busDisplay => !busDisplay);
   };
 
   const getOrigin = (stopp: string) => {
@@ -107,7 +125,7 @@ const Home = () => {
 
   return (
     <div className="home-page">
-      {visibility ?
+      {busDisplay ?
       (
       <div>
       <nav className="homeNav flex justify-between">
@@ -228,7 +246,7 @@ const Home = () => {
       )
       :
       <div>
-        <Buses/> 
+        <Buses busList={busList}/> 
       </div>
       }
     </div>
