@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import { StripeCardElement } from "@stripe/stripe-js";
 import axios from "axios";
+import html2pdf from 'html2pdf.js'
 
 type passengerData = {
   doj: string;
@@ -69,6 +70,19 @@ const CheckoutForm: React.FC<props> = ({ formData, recordID, totalFare }) => {
     }
   };
 
+  const handleDownloadPdf = () => {
+    const element = document.getElementById('ticket')
+
+    const options = {
+      filename: 'Ticket.pdf',
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { scale: 2},
+      jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+    }
+
+    html2pdf().set(options).from(element).save()
+  }
+
   return (
     <>
       {!success ? (
@@ -83,7 +97,8 @@ const CheckoutForm: React.FC<props> = ({ formData, recordID, totalFare }) => {
           </button>
         </form>
       ) : (
-        <div className="border-2 border-black rounded-md shadow-lg shadow-black p-5">
+        <div>
+        <div className="border-2 border-black rounded-md shadow-lg shadow-black p-5 m-5" id="ticket">
           <h1 className="text-center text-lg font-bold">Your Ticket</h1>
           {formData.map((items: any, index: number) => {
             return (
@@ -124,6 +139,8 @@ const CheckoutForm: React.FC<props> = ({ formData, recordID, totalFare }) => {
           <p className="text-sm">
             **Please reach your pick up point atleast 15mins before departure.
           </p>
+        </div>
+          <button onClick={handleDownloadPdf} className="p-1 bg-red-600 text-white"><i className="material-icons">download</i></button>
         </div>
       )}
     </>
