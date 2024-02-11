@@ -63,11 +63,12 @@ app.post("/getBus", (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     const formattedDoj = inputDoj.replace(/^(\d{2})\/(\d{2})\/(\d{4})$/, "$3-$2-$1");
     const busArr = (0, busData_1.searchBus)(origin, destination, formattedDoj);
     const totalDistance = (0, busData_2.calculateTotalFare)(origin, destination);
-    const busList = busArr.buses.map((item) => {
+    const busList = yield Promise.all(busArr.buses.map((item) => __awaiter(void 0, void 0, void 0, function* () {
+        const bookedSeats = yield searchSeats(formattedDoj, origin, destination, item.busName);
         return Object.assign(Object.assign({}, item), { fare: Math.ceil(item.fare * totalDistance), origin,
             destination,
-            doj });
-    });
+            doj, bookedSeats: bookedSeats });
+    })));
     res.json({ buses: busList });
 }));
 app.post("/bookSeat", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -141,6 +142,20 @@ app.post('/create-payment-intent', (req, res) => __awaiter(void 0, void 0, void 
         res.status(500).json({ error: 'Failed to create Payment Intent' });
     }
 }));
+function searchSeats(doj, origin, destination, busName) {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const records = yield DailyRecord_1.default.find({
+                doj, origin, destination, busName
+            }).exec();
+            const bookedSeats = records.map(record => record.seat_no);
+            return bookedSeats;
+        }
+        catch (error) {
+            console.error('Error searching records', error);
+        }
+    });
+}
 app.listen(port, () => {
     console.log(`[server]: Sever is running at localhost:${port}`);
 });

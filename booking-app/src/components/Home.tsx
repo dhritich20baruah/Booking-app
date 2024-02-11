@@ -40,7 +40,8 @@ const Home = () => {
     };
     origin: string;
     destination: string;
-    doj: string
+    doj: string;
+    bookedSeats: Array<string>
   };
 
   const [places, setPlaces] = useState<string>("");

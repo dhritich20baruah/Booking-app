@@ -70,15 +70,17 @@ app.post("/getBus", async (req: Request, res: Response) => {
 
   const busArr = searchBus(origin, destination, formattedDoj);
   const totalDistance = calculateTotalFare(origin, destination);
-  const busList = busArr.buses.map((item) => {
+  const busList = await Promise.all(busArr.buses.map(async(item) => {
+    const bookedSeats = await searchSeats(formattedDoj, origin, destination, item.busName)
     return {
       ...item,
       fare: Math.ceil(item.fare * totalDistance),
       origin,
       destination,
       doj,
+      bookedSeats: bookedSeats,
     };
-  });
+  }));
 
   res.json({ buses: busList });
 });
@@ -160,6 +162,20 @@ app.post('/create-payment-intent', async (req: Request, res: Response) => {
     res.status(500).json({ error: 'Failed to create Payment Intent' });
   }
 })
+
+async function searchSeats(doj: string, origin: string, destination: string, busName: string){
+  try {
+    const records = await DailyRecord.find({
+      doj, origin, destination, busName
+    }).exec()
+
+    const bookedSeats: string[] = records.map(record => record.seat_no)
+
+    return bookedSeats
+  } catch (error) {
+    console.error('Error searching records', error)
+  }
+}
 
 app.listen(port, () => {
   console.log(`[server]: Sever is running at localhost:${port}`);

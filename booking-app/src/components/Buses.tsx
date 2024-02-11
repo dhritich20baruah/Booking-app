@@ -24,6 +24,7 @@ type busArr = {
   origin: string;
   destination: string;
   doj: string;
+  bookedSeats: Array<string>
 };
 
 type props = { busList: busArr[] }
@@ -35,6 +36,7 @@ const Buses: React.FC<props> = ({busList}) => {
   const [busFare, setbusFare] = useState(0);
   const [bus, setBus] = useState("")
   const [startTime, setStartTime] = useState("")
+  console.log(busList)
 
   const handleModify = () => {
     window.location.reload()
