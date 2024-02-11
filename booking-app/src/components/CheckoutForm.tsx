@@ -26,7 +26,8 @@ type props = {
 };
 
 const CheckoutForm: React.FC<props> = ({ formData, recordID, totalFare }) => {
-  const [success, setSuccess] = useState(false);
+  const [success, setSuccess] = useState<boolean>(false);
+  const [pnr, setPnr] = useState<string>("")
   const stripe = useStripe();
   const elements = useElements();
 
@@ -59,8 +60,9 @@ const CheckoutForm: React.FC<props> = ({ formData, recordID, totalFare }) => {
           }
         );
         if (response.data.success) {
-          console.log("Successful payment");
+          console.log("Payment Successful");
           setSuccess(true);
+          setPnr(response.data.payment)
         }
       } catch (error) {
         console.log(error);
@@ -100,6 +102,7 @@ const CheckoutForm: React.FC<props> = ({ formData, recordID, totalFare }) => {
         <div>
         <div className="border-2 border-black rounded-md shadow-lg shadow-black p-5 m-5" id="ticket">
           <h1 className="text-center text-lg font-bold">Your Ticket</h1>
+          <h3 className="text-left font-semibold">PNR: {pnr.toUpperCase()}</h3>
           {formData.map((items: any, index: number) => {
             return (
               <div className="flex justify-between my-3" key={index}>

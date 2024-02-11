@@ -133,7 +133,7 @@ app.post('/create-payment-intent', (req, res) => __awaiter(void 0, void 0, void 
         })));
         res.json({
             message: "Payment Successful",
-            success: true
+            success: true, payment: payment.id
         });
     }
     catch (error) {

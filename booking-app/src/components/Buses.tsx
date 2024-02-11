@@ -34,14 +34,16 @@ const Buses: React.FC<props> = ({busList}) => {
   const [seatVisibility, setSeatVisibility] = useState(false);
   const [busFare, setbusFare] = useState(0);
   const [bus, setBus] = useState("")
+  const [startTime, setStartTime] = useState("")
 
   const handleModify = () => {
     window.location.reload()
   };
 
-  const handleFare = (fare:number, busName:string)=>{
+  const handleFare = (fare:number, busName:string, start_time: string)=>{
     setbusFare(fare);
-    setBus(busName)
+    setBus(busName);
+    setStartTime(start_time)
     handleSeatVisible()
   }
   const handleSeatVisible = () => {
@@ -179,6 +181,12 @@ const Buses: React.FC<props> = ({busList}) => {
           </ul>
         </div>
         <div id="busList" className="w-max-[80%] m-4">
+          {(busList.length == 0)
+          ?
+          (<p className="text-center text-2xl font-bold m-20">NO AVAILABLE BUSES</p>) 
+          : 
+          (<p>AVAILABLE BUSES</p>)}
+          
           {busList.map((item, index) => {
             return (
               <div
@@ -219,7 +227,7 @@ const Buses: React.FC<props> = ({busList}) => {
                   <br />
                   <br />
                   <button
-                    onClick={() => handleFare(item.fare, item.busName)}
+                    onClick={() => handleFare(item.fare, item.busName, item.start_time)}
                     className="bg-red-600 p-4 text-white hover:cursor-pointer hover:bg-red-700"
                   >
                     VIEW SEATS
@@ -235,7 +243,7 @@ const Buses: React.FC<props> = ({busList}) => {
                         doj={item.doj}
                         total_seats={item.total_seats}
                         stoppages={item.stoppages}
-                        start_time={item.start_time}
+                        start_time={startTime}
                         fare={busFare}
                       />
                     </div>

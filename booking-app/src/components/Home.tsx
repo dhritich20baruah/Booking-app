@@ -53,9 +53,9 @@ const Home = () => {
   const [busList, setBusList] = useState<BusDetails[]>([]);
 
   const [doj, setDoj] = useRecoilState<string>(dojState);
-
   const [busDisplay, setBusDisplay] = useState(true);
-
+  
+  const today = new Date().toISOString().split('T')[0];
   
   const handleVisible = () => {
     setBusDisplay(busDisplay => !busDisplay);
@@ -117,11 +117,15 @@ const Home = () => {
         "http://localhost:3000/getBus",
         searchObj
       );
+      console.log(busArr)
       setBusList(busArr.data.buses)
     } catch (error) {
       console.log(error);
     }
   }
+
+  // const minDate: any =  document.getElementById('doj')
+  // minDate.min = new Date().toISOString().split("T")[0];
 
   return (
     <div className="home-page">
@@ -230,6 +234,7 @@ const Home = () => {
             type="date"
             name="doj"
             id="doj"
+            min={today}
             className="font-lg p-[2.7em] h-28 font-bold outline-none border-2 border-gray-500"
             onChange={(event) => setDoj(event.target.value)}
           />

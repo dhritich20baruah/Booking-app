@@ -152,7 +152,7 @@ app.post('/create-payment-intent', async (req: Request, res: Response) => {
     }))
     res.json({
       message: "Payment Successful",
-      success: true
+      success: true, payment: payment.id
     })  
   }
   catch(error){
