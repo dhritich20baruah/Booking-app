@@ -11,12 +11,15 @@ type tripObj = {
   total_seats: number,
   stoppages: Array<string>,
   start_time: string,
-  fare: number
+  fare: number,
+  bookedArr: Array<string>
 }
 
-const SeatPlan: React.FC<tripObj> = ({origin, destination, doj, busName, total_seats, stoppages, start_time, fare}) => {
+const SeatPlan: React.FC<tripObj> = ({origin, destination, doj, busName, total_seats, stoppages, start_time, fare, bookedArr}) => {
   const right = [...Array(24).keys()].map((i) => i + 1);
   const left = Array.from({ length: 48 - 25 + 1 }, (_, index) => 25 + index);
+  // const left = Array.from({ length: total_seats - total_seats/2 }, (_, index) => total_seats/2 + index +1);
+
   const [selectedSeatArr, setSelectedSeatArr] = useState<string[]>([]);
   const passengerVisibility = useRecoilValue(passengerVisibilitySelector);
 
@@ -29,6 +32,10 @@ const SeatPlan: React.FC<tripObj> = ({origin, destination, doj, busName, total_s
   };
 
   const handleSeatClick = (seatNumber: string) => {
+    //Check if the seat is already booked
+    if(bookedArr.includes(seatNumber)){
+      return
+    }
     // Check if the seat is already selected
     const isSelected = selectedSeatArr.includes(seatNumber);
 
@@ -62,9 +69,11 @@ const SeatPlan: React.FC<tripObj> = ({origin, destination, doj, busName, total_s
               className="h-[50%] w-[100%] grid grid-cols-12 gap-x-1"
             >
               {right.map((item) => {
+                const isBooked =  bookedArr.includes(String(item))
+                const isSelected = selectedSeatArr.includes(String(item))
                 return (
                   <div
-                    className="seat w-[2em] h-[2em] border-l-2 border-4 border-black hover:cursor-pointer hover:bg-red-500"
+                  className={`seat w-[2em] h-[2em] border-l-2 border-4 border-black hover:cursor-pointer ${isBooked ? 'bg-red-500' : (isSelected ? 'bg-green-500' : '')}`}
                     key={item}
                     onClick={() => handleSeatClick(String(item))}
                   >
@@ -78,9 +87,11 @@ const SeatPlan: React.FC<tripObj> = ({origin, destination, doj, busName, total_s
               className="h-[50%] w-[100%] grid grid-cols-12 gap-x-1"
             >
               {left.map((item) => {
+                 const isBooked =  bookedArr.includes(String(item))
+                 const isSelected = selectedSeatArr.includes(String(item))
                 return (
                   <div
-                    className="seat w-[2em] h-[2em] border-l-2 border-4 border-black hover:cursor-pointer hover:bg-red-500"
+                  className={`seat w-[2em] h-[2em] border-l-2 border-4 border-black hover:cursor-pointer ${isBooked ? 'bg-red-500' : (isSelected ? 'bg-green-500' : '')}`}
                     key={item}
                     onClick={() => handleSeatClick(String(item))}
                   >

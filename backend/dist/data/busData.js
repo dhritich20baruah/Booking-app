@@ -40,7 +40,7 @@ exports.busData = [
     {
         busName: "Network Travels",
         details: "Non A/C Seater Pushback 2+1",
-        total_seats: 35,
+        total_seats: 36,
         stoppages: [
             "Guwahati", "Nagaon", "Bokakhat", "Jorhat", "Sivsagar", "Moran", "Dibrugarh", "Tinsukia"
         ],
@@ -64,7 +64,7 @@ exports.busData = [
     {
         busName: "Rayan",
         details: "Bharat Benz A/C 2+1 Seater",
-        total_seats: 35,
+        total_seats: 36,
         stoppages: [
             "Nagaon", "Bokakhat", "Jorhat", "Sivsagar", "Moran", "Dibrugarh", "Tinsukia"
         ],

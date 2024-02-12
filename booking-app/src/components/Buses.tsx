@@ -36,16 +36,17 @@ const Buses: React.FC<props> = ({busList}) => {
   const [busFare, setbusFare] = useState(0);
   const [bus, setBus] = useState("")
   const [startTime, setStartTime] = useState("")
-  console.log(busList)
+  const [bookedArr, setBookedArr] = useState<string[]>([])
 
   const handleModify = () => {
     window.location.reload()
   };
 
-  const handleFare = (fare:number, busName:string, start_time: string)=>{
+  const handleFare = (fare:number, busName:string, start_time: string, bookedSeats: Array<string>)=>{
     setbusFare(fare);
     setBus(busName);
     setStartTime(start_time)
+    setBookedArr(bookedSeats)
     handleSeatVisible()
   }
   const handleSeatVisible = () => {
@@ -224,12 +225,11 @@ const Buses: React.FC<props> = ({busList}) => {
                 </div>
                 <div>
                   <br />
-                  <p>{item.total_seats} Seats Available</p>
-                  <p>8 Single</p>
+                  <p>{item.total_seats - item.bookedSeats.length} Seats Available {item.total_seats}</p>
                   <br />
                   <br />
                   <button
-                    onClick={() => handleFare(item.fare, item.busName, item.start_time)}
+                    onClick={() => handleFare(item.fare, item.busName, item.start_time, item.bookedSeats)}
                     className="bg-red-600 p-4 text-white hover:cursor-pointer hover:bg-red-700"
                   >
                     VIEW SEATS
@@ -247,6 +247,7 @@ const Buses: React.FC<props> = ({busList}) => {
                         stoppages={item.stoppages}
                         start_time={startTime}
                         fare={busFare}
+                        bookedArr={bookedArr}
                       />
                     </div>
                   )}

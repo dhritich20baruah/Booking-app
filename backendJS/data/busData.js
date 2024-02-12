@@ -40,7 +40,7 @@ const busData = [
   {
     name: "Network Travels",
     details: "Non A/C Seater Pushback 2+1",
-    total_seats: 35,
+    total_seats: 36,
     stoppages: [
       "Guwahati",
       "Nagaon",
@@ -76,8 +76,8 @@ const busData = [
   },
   {
     name: "Rayan",
-    details: "Bharat Benz A/C 2+1 Seater",
-    total_seats: 35,
+    details: "Bharat Benz A/C 2+2 Seater",
+    total_seats: 36,
     stoppages: [
       "Nagaon",
       "Bokakhat",
