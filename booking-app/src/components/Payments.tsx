@@ -30,7 +30,7 @@ const Payments: React.FC<props> = ({ formData, recordID }) => {
   const totalFare = info.fare * formData.length
   return (
     <>
-      <div className="z-20 fixed top-0 left-0 w-[100vw] h-[100vh] bg-white">
+      <div className="z-20 fixed top-0 left-0 w-[100vw] min-h-full bg-white">
         <nav className="homeNav flex justify-between">
           <img
             src={logo}

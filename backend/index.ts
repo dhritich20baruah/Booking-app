@@ -72,12 +72,14 @@ app.post("/getBus", async (req: Request, res: Response) => {
   const totalDistance = calculateTotalFare(origin, destination);
   const busList = await Promise.all(busArr.buses.map(async(item) => {
     const bookedSeats = await searchSeats(formattedDoj, origin, destination, item.busName)
+    const busStops = item.stoppages.slice(item.stoppages.indexOf(origin), item.stoppages.indexOf(destination))
     return {
       ...item,
       fare: Math.ceil(item.fare * totalDistance),
       origin,
       destination,
       doj,
+      stoppages: busStops,
       bookedSeats: bookedSeats,
     };
   }));
@@ -87,7 +89,6 @@ app.post("/getBus", async (req: Request, res: Response) => {
 
 app.post("/bookSeat", async (req: Request, res: Response) => {
   try {
-    console.log(req.body);
     const savedRecordIds: Types.ObjectId[] = [];
 
     await Promise.all(req.body.map(async (passenger: any) => {

@@ -118,7 +118,7 @@ const Home = () => {
         "http://localhost:3000/getBus",
         searchObj
       );
-      console.log(busArr)
+      console.log(busArr.data.buses)
       setBusList(busArr.data.buses)
     } catch (error) {
       console.log(error);

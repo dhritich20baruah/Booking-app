@@ -85,6 +85,10 @@ const CheckoutForm: React.FC<props> = ({ formData, recordID, totalFare }) => {
     html2pdf().set(options).from(element).save()
   }
 
+  const handleAnother = () => {
+    window.location.reload()
+  };
+
   return (
     <>
       {!success ? (
@@ -143,7 +147,8 @@ const CheckoutForm: React.FC<props> = ({ formData, recordID, totalFare }) => {
             **Please reach your pick up point atleast 15mins before departure.
           </p>
         </div>
-          <button onClick={handleDownloadPdf} className="p-1 bg-red-600 text-white"><i className="material-icons">download</i></button>
+          <button onClick={handleDownloadPdf} className="p-1 bg-red-600 text-white mx-2"><i className="material-icons">download</i></button>
+          <button onClick={handleAnother} className="p-1 bg-red-600 text-white mx-2">Book Another Ticket</button>
         </div>
       )}
     </>

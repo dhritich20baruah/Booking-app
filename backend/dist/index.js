@@ -65,15 +65,15 @@ app.post("/getBus", (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     const totalDistance = (0, busData_2.calculateTotalFare)(origin, destination);
     const busList = yield Promise.all(busArr.buses.map((item) => __awaiter(void 0, void 0, void 0, function* () {
         const bookedSeats = yield searchSeats(formattedDoj, origin, destination, item.busName);
+        const busStops = item.stoppages.slice(item.stoppages.indexOf(origin), item.stoppages.indexOf(destination));
         return Object.assign(Object.assign({}, item), { fare: Math.ceil(item.fare * totalDistance), origin,
             destination,
-            doj, bookedSeats: bookedSeats });
+            doj, stoppages: busStops, bookedSeats: bookedSeats });
     })));
     res.json({ buses: busList });
 }));
 app.post("/bookSeat", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        console.log(req.body);
         const savedRecordIds = [];
         yield Promise.all(req.body.map((passenger) => __awaiter(void 0, void 0, void 0, function* () {
             // Ensure that passenger details are provided
