@@ -64,7 +64,7 @@ app.post("/getBus", (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     const busArr = (0, busData_1.searchBus)(origin, destination, formattedDoj);
     const totalDistance = (0, busData_2.calculateTotalFare)(origin, destination);
     const busList = yield Promise.all(busArr.buses.map((item) => __awaiter(void 0, void 0, void 0, function* () {
-        const bookedSeats = yield searchSeats(formattedDoj, origin, destination, item.busName);
+        const bookedSeats = yield searchSeats(formattedDoj, origin, item.busName);
         const busStops = item.stoppages.slice(item.stoppages.indexOf(origin), item.stoppages.indexOf(destination));
         return Object.assign(Object.assign({}, item), { fare: Math.ceil(item.fare * totalDistance), origin,
             destination,
@@ -142,11 +142,11 @@ app.post('/create-payment-intent', (req, res) => __awaiter(void 0, void 0, void 
         res.status(500).json({ error: 'Failed to create Payment Intent' });
     }
 }));
-function searchSeats(doj, origin, destination, busName) {
+function searchSeats(doj, origin, busName) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const records = yield DailyRecord_1.default.find({
-                doj, origin, destination, busName
+                doj, stoppages: { $in: [origin] }, busName
             }).exec();
             const bookedSeats = records.map(record => record.seat_no);
             return bookedSeats;

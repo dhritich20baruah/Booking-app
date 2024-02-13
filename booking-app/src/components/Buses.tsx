@@ -203,7 +203,7 @@ const Buses: React.FC<props> = ({busList}) => {
                   <p>{item.details}</p>
                 </div>
                 <div>
-                  <p className="font-bold text-lg">{item.start_time}</p>
+                  <p className="font-bold text-lg">{item.travelTime.startTime}</p>
                   <p>{item.doj}</p>
                   <p>{item.origin}</p>
                 </div>

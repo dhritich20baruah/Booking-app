@@ -71,7 +71,7 @@ app.post("/getBus", async (req: Request, res: Response) => {
   const busArr = searchBus(origin, destination, formattedDoj);
   const totalDistance = calculateTotalFare(origin, destination);
   const busList = await Promise.all(busArr.buses.map(async(item) => {
-    const bookedSeats = await searchSeats(formattedDoj, origin, destination, item.busName)
+    const bookedSeats = await searchSeats(formattedDoj, origin, item.busName)
     const busStops = item.stoppages.slice(item.stoppages.indexOf(origin), item.stoppages.indexOf(destination))
     return {
       ...item,
@@ -164,10 +164,10 @@ app.post('/create-payment-intent', async (req: Request, res: Response) => {
   }
 })
 
-async function searchSeats(doj: string, origin: string, destination: string, busName: string){
+async function searchSeats(doj: string, origin: string, busName: string){
   try {
     const records = await DailyRecord.find({
-      doj, origin, destination, busName
+      doj, stoppages: { $in: [origin] }, busName
     }).exec()
 
     const bookedSeats: string[] = records.map(record => record.seat_no)

@@ -195,8 +195,11 @@ export function searchBus(origin: string, destination: string, doj: string): { b
         // Calculate total distance and time
         let totalDistance = 0;
         let totalTime = 0;
+
+        let totalStartDistance = 0;
+        let totalStartTime = 0;
   
-        for (let i = originIndex; i < destinationIndex; i++) {
+        for (let i = 0; i <= destinationIndex; i++) {
           const stop = stops.find((s) => s.name === bus.stoppages[i]);
   
           if (!stop) {
@@ -206,16 +209,29 @@ export function searchBus(origin: string, destination: string, doj: string): { b
           totalDistance += stop.distance_from_last;
           totalTime += (stop.distance_from_last / bus.speed!) * 60; // Convert distance to time in minutes
         }
+
+        for (let i = 0; i <= originIndex; i++) {
+          const stop = stops.find((s) => s.name === bus.stoppages[i]);
+  
+          if (!stop) {
+            return { buses: [] }; // Stop not found
+          }
+  
+          totalStartDistance += stop.distance_from_last;
+          totalStartTime += (stop.distance_from_last / bus.speed!) * 60; // Convert distance to time in minutes
+        }
   
         const startTime = new Date(`${doj}T${bus.start_time}`);
+        const actualStartTime = new Date(startTime.getTime() + totalStartTime * 60 *1000) 
         const endTime = new Date(startTime.getTime() + totalTime * 60 * 1000); // Convert time back to milliseconds
+        console.log(actualStartTime, totalStartDistance, endTime, totalDistance)
         if (isNaN(endTime.getTime())) {
           return { buses: [] }; // Invalid time
         }
   
         const travelTime: TravelTime = {
           startDate: format(startTime, 'yyyy-MM-dd'), // Format the date
-          startTime: format(startTime, 'HH:mm'), // Format the time
+          startTime: format(actualStartTime, 'HH:mm'), // Format the time
           endDate: format(endTime, 'yyyy-MM-dd'), // Format the date
           endTime: format(endTime, 'HH:mm'), // Format the time
         };
