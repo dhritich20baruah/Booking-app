@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { useRecoilState } from "recoil";
 import { originState } from "../recoil/atom/JourneyAtom";
 import { destinationState } from "../recoil/atom/JourneyAtom";
@@ -9,6 +9,7 @@ import ride from "../Images/ride.jpg";
 import train from "../Images/train.jpg";
 import axios from "axios";
 import Buses from "./Buses";
+import BusContext from "./Context";
 
 const Home = () => {
   const stoppages: string[] = [
