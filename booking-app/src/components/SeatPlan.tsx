@@ -1,5 +1,3 @@
-import { useRecoilState, useRecoilValue } from "recoil";
-import { passengerVisibilitySelector } from "../recoil/selectors/VisibilitySelectors";
 import { useState } from "react";
 import PassengerDetails from "./PassengerDetails";
 
@@ -15,17 +13,14 @@ type tripObj = {
   bookedArr: Array<string>
 }
 
-const SeatPlan: React.FC<tripObj> = ({origin, destination, doj, busName, total_seats, stoppages, start_time, fare, bookedArr}) => {
+const SeatPlan: React.FC<tripObj> = ({origin, destination, doj, busName, stoppages, start_time, fare, bookedArr}) => {
   const right = [...Array(24).keys()].map((i) => i + 1);
   const left = Array.from({ length: 48 - 25 + 1 }, (_, index) => 25 + index);
   // const left = Array.from({ length: total_seats - total_seats/2 }, (_, index) => total_seats/2 + index +1);
 
   const [selectedSeatArr, setSelectedSeatArr] = useState<string[]>([]);
-  const passengerVisibility = useRecoilValue(passengerVisibilitySelector);
 
-  const [, setPassengerVisibility] = useRecoilState(
-    passengerVisibilitySelector
-  );
+  const [passengerVisibility, setPassengerVisibility] = useState(false);
 
   const handlePassengerVisible = () => {
     setPassengerVisibility((prevValue) => !prevValue);
@@ -129,7 +124,13 @@ const SeatPlan: React.FC<tripObj> = ({origin, destination, doj, busName, total_s
       }
       </div>
     </section>
-    {passengerVisibility && <PassengerDetails origin={origin} destination={destination} doj={doj} busName={busName} stoppages={stoppages} start_time={start_time} fare={fare} seatNos={selectedSeatArr}/>}
+      
+    {passengerVisibility &&
+    <div>
+     <button onClick={handlePassengerVisible} className="top-0 right-0 fixed font-bold p-1 m-3 text-white bg-red-500 hover:cursor-pointer z-30">X</button>
+    <PassengerDetails origin={origin} destination={destination} doj={doj} busName={busName} stoppages={stoppages} start_time={start_time} fare={fare} seatNos={selectedSeatArr}/>
+    </div>
+    }
     </>
   );
 };

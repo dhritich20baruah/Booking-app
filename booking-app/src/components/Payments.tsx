@@ -30,7 +30,7 @@ const Payments: React.FC<props> = ({ formData, recordID }) => {
   const totalFare = info.fare * formData.length
   return (
     <>
-      <div className="z-20 fixed top-0 left-0 w-[100vw] min-h-full bg-white">
+      <div className="z-40 fixed top-0 left-0 w-[100vw] min-h-full bg-white">
         <nav className="homeNav flex justify-between">
           <img
             src={logo}
@@ -61,8 +61,8 @@ const Payments: React.FC<props> = ({ formData, recordID }) => {
         </div>
         <div className="main flex">
           <div className="payment-options w-[60%] p-10">
-            <h1 className="text-xl font-bold mb-5">Choose Payment Method</h1>
-            <div className="flex flex-col shadow-lg shadow-black p-5 space-y-3 text-lg font-semibold text-gray-800">
+            <h1 className="text-xl font-bold mb-5">Make Payment</h1>
+            {/* <div className="flex flex-col shadow-lg shadow-black p-5 space-y-3 text-lg font-semibold text-gray-800">
               <label
                 htmlFor="creditCard"
                 className="border-b-2 border-gray-400 pb-2"
@@ -81,7 +81,7 @@ const Payments: React.FC<props> = ({ formData, recordID }) => {
                 <input type="radio" name="netBanking" id="netBanking" /> Net
                 Banking
               </label>
-            </div>
+            </div> */}
             <div className="my-10">
               <Elements stripe={stripePromise}>
                 <CheckoutForm recordID={recordID} totalFare={totalFare} formData={formData}/>

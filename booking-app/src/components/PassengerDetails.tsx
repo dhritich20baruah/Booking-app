@@ -1,5 +1,3 @@
-import { useRecoilState } from "recoil";
-import { passengerVisibilitySelector } from "../recoil/selectors/VisibilitySelectors";
 import { useState } from "react";
 import axios from "axios";
 import Payments from "./Payments";
@@ -41,15 +39,9 @@ const PassengerDetails: React.FC<passengerObj> = ({
   fare,
   seatNos,
 }) => {
-  const [, setPassengerVisibility] = useRecoilState(
-    passengerVisibilitySelector
-  );
+
   const [paymentsDisplay, setPaymentsDisplay] = useState(false);
   const [recordID, setRecordID] = useState<string[]>([])
-
-  const handlePassengerVisible = () => {
-    setPassengerVisibility((prevValue) => !prevValue);
-  };
 
   const handlePaymentsDisplay = () => {
     setPaymentsDisplay((paymentsDisplay) => !paymentsDisplay);
@@ -101,14 +93,8 @@ const PassengerDetails: React.FC<passengerObj> = ({
     <>
     <div
       id="passengerDetails"
-      className="fixed top-0 right-0 bg-white z-10 h-[100%] px-8 py-12 w-[30vw] shadow-lg shadow-black space-y-4 overflow-auto"
+      className="fixed top-0 right-0 bg-white z-10 h-[100%] px-8 py-5 w-[30vw] shadow-lg shadow-black space-y-4 overflow-auto"
     >
-      <i
-        className="material-icons hover:cursor-pointer"
-        onClick={handlePassengerVisible}
-      >
-        highlight_off
-      </i>
       <h2 className="text-xl font-bold">{busName}</h2>
       <h2 className="text-xl font-bold">Passenger Details</h2>
       <div className="passenger-info space-y-2">

@@ -32,7 +32,7 @@ const Buses: React.FC<props> = ({busList}) => {
     throw new Error('useContext must be used within a BusContextProvider');
   }
 
-  const {origin, setOrigin, destination, setDestination, doj, setDoj} = context;
+  const {origin, destination, doj} = context;
   const [seatVisibility, setSeatVisibility] = useState(false);
   const [busFare, setbusFare] = useState(0);
   const [bus, setBus] = useState("")
@@ -226,7 +226,8 @@ const Buses: React.FC<props> = ({busList}) => {
                 </div>
                 <div>
                   <br />
-                  <p>{item.total_seats - item.bookedSeats.length} Seats Available {item.total_seats}</p>
+                  <p className="font-semibold">{item.total_seats} Total Seats</p>
+                  <p className="font-semibold">{item.total_seats - item.bookedSeats.length} Seats Available</p>
                   <br />
                   <br />
                   <button

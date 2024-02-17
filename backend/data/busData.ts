@@ -224,7 +224,6 @@ export function searchBus(origin: string, destination: string, doj: string): { b
         const startTime = new Date(`${doj}T${bus.start_time}`);
         const actualStartTime = new Date(startTime.getTime() + totalStartTime * 60 *1000) 
         const endTime = new Date(startTime.getTime() + totalTime * 60 * 1000); // Convert time back to milliseconds
-        console.log(actualStartTime, totalStartDistance, endTime, totalDistance)
         if (isNaN(endTime.getTime())) {
           return { buses: [] }; // Invalid time
         }
