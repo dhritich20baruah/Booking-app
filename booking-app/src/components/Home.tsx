@@ -1,8 +1,5 @@
 import { useState, useContext } from "react";
-import { useRecoilState } from "recoil";
-import { originState } from "../recoil/atom/JourneyAtom";
-import { destinationState } from "../recoil/atom/JourneyAtom";
-import { dojState } from "../recoil/atom/JourneyAtom";
+
 import logo from "../Images/redbuslogo2.jpg";
 import blackLogo from "../Images/redbusblack.png";
 import ride from "../Images/ride.jpg";
@@ -45,16 +42,20 @@ const Home = () => {
     bookedSeats: Array<string>
   };
 
+  const context = useContext(BusContext);
+  if (!context) {
+    throw new Error('useContext must be used within a BusContextProvider');
+  }
+
+  const {origin, setOrigin, destination, setDestination, doj, setDoj} = context;
+
   const [places, setPlaces] = useState<string>("");
   const [filteredOrigins, setFilteredOrigins] = useState<string[]>([]);
-  const [origin, setOrigin] = useRecoilState<string>(originState);
 
   const [stops, setStops] = useState<string>("");
   const [filteredDestinations, setFilteredDestination] = useState<string[]>([]);
-  const [destination, setDestination] = useRecoilState<string>(destinationState);
   const [busList, setBusList] = useState<BusDetails[]>([]);
 
-  const [doj, setDoj] = useRecoilState<string>(dojState);
   const [busDisplay, setBusDisplay] = useState(true);
   
   const today = new Date().toISOString().split('T')[0];

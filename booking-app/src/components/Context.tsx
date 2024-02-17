@@ -1,5 +1,14 @@
 import { createContext } from "react";
 
-const BusContext = createContext("")
+type BusContextType = {
+    origin: string;
+    setOrigin: React.Dispatch<React.SetStateAction<string>>;
+    destination: string;
+    setDestination: React.Dispatch<React.SetStateAction<string>>;
+    doj: string;
+    setDoj: React.Dispatch<React.SetStateAction<string>>;
+}
+
+const BusContext = createContext<BusContextType | undefined>(undefined)
 
 export default BusContext
