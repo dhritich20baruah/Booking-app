@@ -1,11 +1,8 @@
 import redLogo from "../Images/redbuslogo.jpg";
 import SeatPlan from "./SeatPlan";
 import { Link } from "react-router-dom";
-import { useRecoilValue } from "recoil";
-import { originState } from "../recoil/atom/JourneyAtom";
-import { destinationState } from "../recoil/atom/JourneyAtom";
-import { useState } from "react";
-
+import { useState, useContext } from "react";
+import BusContext from "./Context";
 type busArr = {
   busName: string;
   details: string;
@@ -30,8 +27,12 @@ type busArr = {
 type props = { busList: busArr[] }
 
 const Buses: React.FC<props> = ({busList}) => {
-  const origin = useRecoilValue(originState);
-  const destination = useRecoilValue(destinationState);
+  const context = useContext(BusContext);
+  if (!context) {
+    throw new Error('useContext must be used within a BusContextProvider');
+  }
+
+  const {origin, setOrigin, destination, setDestination, doj, setDoj} = context;
   const [seatVisibility, setSeatVisibility] = useState(false);
   const [busFare, setbusFare] = useState(0);
   const [bus, setBus] = useState("")

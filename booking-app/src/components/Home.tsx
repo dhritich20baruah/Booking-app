@@ -1,5 +1,4 @@
 import { useState, useContext } from "react";
-
 import logo from "../Images/redbuslogo2.jpg";
 import blackLogo from "../Images/redbusblack.png";
 import ride from "../Images/ride.jpg";
