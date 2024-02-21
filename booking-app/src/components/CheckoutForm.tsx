@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import { StripeCardElement } from "@stripe/stripe-js";
 import axios from "axios";
 import html2pdf from 'html2pdf.js'
+import { PaymentContext } from "./Context";
 
 type passengerData = {
   doj: string;
@@ -26,7 +27,11 @@ type props = {
 };
 
 const CheckoutForm: React.FC<props> = ({ formData, recordID, totalFare }) => {
-  const [success, setSuccess] = useState<boolean>(false);
+  const payContext = useContext(PaymentContext);
+  if (!payContext) {
+    throw new Error('useContext must be used within a PayContextProvider');
+  }
+  const {paymentSuccess, setPaymentSuccess} = payContext
   const [pnr, setPnr] = useState<string>("")
   const stripe = useStripe();
   const elements = useElements();
@@ -61,7 +66,7 @@ const CheckoutForm: React.FC<props> = ({ formData, recordID, totalFare }) => {
         );
         if (response.data.success) {
           console.log("Payment Successful");
-          setSuccess(true);
+          setPaymentSuccess(true);
           setPnr(response.data.payment)
         }
       } catch (error) {
@@ -91,7 +96,7 @@ const CheckoutForm: React.FC<props> = ({ formData, recordID, totalFare }) => {
 
   return (
     <>
-      {!success ? (
+      {!paymentSuccess ? (
         <form onSubmit={handleSubmit}>
           <CardElement />
           <button

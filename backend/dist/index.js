@@ -142,6 +142,22 @@ app.post('/create-payment-intent', (req, res) => __awaiter(void 0, void 0, void 
         res.status(500).json({ error: 'Failed to create Payment Intent' });
     }
 }));
+app.post("/deleteRecord", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { recordID } = req.body;
+    try {
+        yield Promise.all(recordID.map((ids) => __awaiter(void 0, void 0, void 0, function* () {
+            let records = yield DailyRecord_1.default.findByIdAndDelete(ids);
+        })));
+        res.json({
+            message: "Record Deleted",
+            success: true
+        });
+    }
+    catch (error) {
+        console.error('Error in deleting record:', error);
+        res.status(500).json({ error: 'Failed to delete record' });
+    }
+}));
 function searchSeats(doj, origin, busName) {
     return __awaiter(this, void 0, void 0, function* () {
         try {

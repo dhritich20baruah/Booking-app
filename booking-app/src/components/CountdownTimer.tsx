@@ -1,12 +1,21 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 
-const CountdownTimer = () => {
-  const [timeLeft, setTimeLeft] = useState(120);
+type props = {
+  recordID: Array<string>,
+  isPaused: boolean,
+}
+
+const CountdownTimer: React.FC<props> = ({recordID, isPaused}) => {
+  const [timeLeft, setTimeLeft] = useState(60);
 
   useEffect(() => {
-    const intervalId = setInterval(() => {
-      setTimeLeft((prevTime) => prevTime - 1);
-    }, 1000);
+    let intervalId: NodeJS.Timeout
+    if(!isPaused){
+      intervalId = setInterval(() => {
+        setTimeLeft((prevTime) => prevTime - 1);
+      }, 1000);
+    }
 
     return () => clearInterval(intervalId);
   }, []);
@@ -15,8 +24,10 @@ const CountdownTimer = () => {
     if (timeLeft === 0) {
       // Reload the page after 2 minutes
       setTimeout(() => {
-        window.location.reload();
-      }, 2000);
+        axios.post("http://localhost:3000/deleteRecord", {recordID})
+        alert("Transaction timed out!! Please try again.") 
+        window.location.reload()
+      }, 1000);
     }
   }, [timeLeft]);
 

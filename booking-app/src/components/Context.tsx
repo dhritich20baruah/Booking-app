@@ -11,4 +11,11 @@ type BusContextType = {
 
 const BusContext = createContext<BusContextType | undefined>(undefined)
 
+type paymentContextType = {
+    paymentSuccess: boolean;
+    setPaymentSuccess: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+export const PaymentContext = createContext<paymentContextType | undefined>(undefined)
+
 export default BusContext

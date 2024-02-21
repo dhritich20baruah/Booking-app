@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState, useContext } from "react";
 import logo from "../Images/redbuslogo2.jpg";
 import CountdownTimer from "./CountdownTimer";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
 import CheckoutForm from "./CheckoutForm";
+import { PaymentContext } from "./Context";
 
 type passengerData = {
   doj: string;
@@ -26,6 +27,11 @@ const PUBLIC_KEY = "pk_test_51Oh5akSGJj1UMFGk8ivs6pI4dIOO5nCcBGsqyoVt36KY6L75H64
 const stripePromise = loadStripe(PUBLIC_KEY);
 
 const Payments: React.FC<props> = ({ formData, recordID }) => {
+  const payContext = useContext(PaymentContext);
+  if (!payContext) {
+    throw new Error('useContext must be used within a PayContextProvider');
+  }
+  const {paymentSuccess} = payContext
   const info = formData[0];
   const totalFare = info.fare * formData.length
   return (
@@ -55,7 +61,7 @@ const Payments: React.FC<props> = ({ formData, recordID }) => {
             </li>
             <li className="flex">
               Please pay within <i className="material-icons mx-2">alarm</i>
-              {/* <CountdownTimer/> */}
+              <CountdownTimer recordID={recordID} isPaused={paymentSuccess}/>
             </li>
           </ul>
         </div>

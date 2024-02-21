@@ -164,6 +164,23 @@ app.post('/create-payment-intent', async (req: Request, res: Response) => {
   }
 })
 
+app.post("/deleteRecord", async (req: Request, res: Response) => {
+  const {recordID} = req.body;
+  try {
+    await Promise.all(recordID.map(async (ids: string)=>{
+        let records = await DailyRecord.findByIdAndDelete(ids)
+    }))
+    res.json({
+      message: "Record Deleted",
+      success: true
+    })  
+  }
+  catch(error){
+    console.error('Error in deleting record:', error);
+    res.status(500).json({ error: 'Failed to delete record' });
+  }
+})
+
 async function searchSeats(doj: string, origin: string, busName: string){
   try {
     const records = await DailyRecord.find({
