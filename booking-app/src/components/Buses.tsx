@@ -32,7 +32,7 @@ const Buses: React.FC<props> = ({busList}) => {
     throw new Error('useContext must be used within a BusContextProvider');
   }
 
-  const {origin, destination, doj} = context;
+  const {origin, destination} = context;
   const [seatVisibility, setSeatVisibility] = useState(false);
   const [busFare, setbusFare] = useState(0);
   const [bus, setBus] = useState("")

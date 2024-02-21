@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useContext } from "react";
 import logo from "../Images/redbuslogo2.jpg";
 import CountdownTimer from "./CountdownTimer";
 import { loadStripe } from "@stripe/stripe-js";

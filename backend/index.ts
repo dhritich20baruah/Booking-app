@@ -30,27 +30,25 @@ app.get("/", (req: Request, res: Response) => {
 app.post("/newBus", async (req: Request, res: Response) => {
   try {
     const {
-      name,
+      busName,
       details,
-      service,
       total_seats,
       stoppages,
       fare,
       start_time,
-      arrival_time,
-      duration,
+      speed,
+      service
     } = req.body;
 
     const newBus = new Bus({
-      name,
+      busName,
       details,
-      service,
       total_seats,
       stoppages,
       fare,
       start_time,
-      arrival_time,
-      duration,
+      speed,
+      service
     });
     await newBus.save();
     res.status(200).json({ status: "OK", newBus });

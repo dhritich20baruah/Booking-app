@@ -37,17 +37,16 @@ app.get("/", (req, res) => {
 });
 app.post("/newBus", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { name, details, service, total_seats, stoppages, fare, start_time, arrival_time, duration, } = req.body;
+        const { busName, details, total_seats, stoppages, fare, start_time, speed, service } = req.body;
         const newBus = new Bus_1.default({
-            name,
+            busName,
             details,
-            service,
             total_seats,
             stoppages,
             fare,
             start_time,
-            arrival_time,
-            duration,
+            speed,
+            service
         });
         yield newBus.save();
         res.status(200).json({ status: "OK", newBus });

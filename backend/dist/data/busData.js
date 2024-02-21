@@ -74,13 +74,6 @@ exports.busData = [
         service: "day",
     },
 ];
-// export default function searchBus(origin: string, destination: string): Bus[]{
-//     return busData.filter((bus)=>{
-//       const originIndex = bus.stoppages.indexOf(origin);
-//       const destinationIndex = bus.stoppages.indexOf(destination);
-//       return originIndex !== -1 && destinationIndex !== -1 && originIndex < destinationIndex
-//     })
-//    }
 function calculateTotalFare(origin, destination) {
     var _a;
     const bus = exports.busData.find((bus) => bus.stoppages.includes(origin) && bus.stoppages.includes(destination));
