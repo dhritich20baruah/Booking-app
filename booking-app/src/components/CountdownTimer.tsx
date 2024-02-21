@@ -13,15 +13,15 @@ const CountdownTimer: React.FC<props> = ({recordID, isPaused}) => {
     let intervalId: NodeJS.Timeout
     if(!isPaused){
       intervalId = setInterval(() => {
-        setTimeLeft((prevTime) => prevTime - 1);
+        setTimeLeft((prevTime) => (prevTime > 0 ? prevTime - 1 : 0));
       }, 1000);
     }
 
     return () => clearInterval(intervalId);
-  }, []);
+  }, [isPaused]);
 
   useEffect(() => {
-    if (timeLeft === 0) {
+    if (timeLeft === 0 && isPaused) {
       // Reload the page after 2 minutes
       setTimeout(() => {
         axios.post("http://localhost:3000/deleteRecord", {recordID})

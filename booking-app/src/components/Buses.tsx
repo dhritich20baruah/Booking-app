@@ -43,10 +43,10 @@ const Buses: React.FC<props> = ({busList}) => {
     window.location.reload()
   };
 
-  const handleFare = (fare:number, busName:string, start_time: string, bookedSeats: Array<string>)=>{
+  const handleFare = (fare:number, busName:string, startTime: string, bookedSeats: Array<string>)=>{
     setbusFare(fare);
     setBus(busName);
-    setStartTime(start_time)
+    setStartTime(startTime)
     setBookedArr(bookedSeats)
     handleSeatVisible()
   }
@@ -231,7 +231,7 @@ const Buses: React.FC<props> = ({busList}) => {
                   <br />
                   <br />
                   <button
-                    onClick={() => handleFare(item.fare, item.busName, item.start_time, item.bookedSeats)}
+                    onClick={() => handleFare(item.fare, item.busName, item.travelTime.startTime, item.bookedSeats)}
                     className="bg-red-600 p-4 text-white hover:cursor-pointer hover:bg-red-700"
                   >
                     VIEW SEATS
