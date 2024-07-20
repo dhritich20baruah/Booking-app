@@ -1,20 +1,5 @@
 import mongoose, { Schema, Document, Model } from 'mongoose';
 
-// type BusType = Document & {
-//   name: string;
-//   details: string;
-//   service: string;
-//   total_seats: number;
-//   stoppages: {
-//     name: string;
-//     distance_from_last: number;
-//     arrival_time: string;
-//   }[];
-//   fare: number;
-//   start_time: string;
-//   arrival_time: string;
-// };
-
 type BusType = Document & {
   busName: string;
   details: string;
